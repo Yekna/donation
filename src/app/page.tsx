@@ -24,13 +24,17 @@ export default function Home() {
     const updateWidth = () => {
       // TODO: use a debouncer
       if (ref.current) {
-        const newWidth = ref.current.getBoundingClientRect().width;
+        const newWidth = ref.current.offsetWidth;
         setContainerWidth(newWidth);
       }
-      if (firstSliderRef.current) {
-        const newWidth = firstSliderRef.current.offsetWidth;
-        setSliderWidth(newWidth);
-      }
+
+      // TODO: remove setTimeout entirely. For now this is the only solution I could come up with. Building the code makes it so offsetWidth is set to 0 for some reason.
+      setTimeout(() => {
+        if (firstSliderRef.current) {
+          const newWidth = firstSliderRef.current.offsetWidth;
+          setSliderWidth(newWidth);
+        }
+      }, 100);
     };
 
     updateWidth();
