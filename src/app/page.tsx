@@ -47,7 +47,7 @@ export default function Home() {
   }, []);
 
   return (
-    <main ref={ref} className="max-w-xl mx-auto relative">
+    <main ref={ref} className="max-w-xl mx-auto relative overflow-hidden">
       <Image
         className="w-full"
         src="/Háttér és Fejléc.svg"
