@@ -29,6 +29,21 @@ export default function Home() {
     sled4: 0,
   });
 
+  const reset = useCallback(() => {
+    if (
+      firstSledRef.current &&
+      secondSledRef.current &&
+      thirdSledRef.current &&
+      fourthSledRef.current
+    ) {
+      setDonations({ sled1: 0, sled2: 0, sled3: 0, sled4: 0 });
+      firstSledRef.current.style.left = `${(width * 0.025).toString()}px`;
+      secondSledRef.current.style.left = `${(width * 0.025).toString()}px`;
+      thirdSledRef.current.style.left = `${(width * 0.025).toString()}px`;
+      fourthSledRef.current.style.left = `${(width * 0.025).toString()}px`;
+    }
+  }, [width]);
+
   const handleChange = useCallback(
     (inputName: string, value: string) => {
       const newValues = {
@@ -74,7 +89,7 @@ export default function Home() {
         setDonations(newValues);
       }
     },
-    [donations, sliderWidth, width]
+    [donations, sliderWidth, width],
   );
 
   useEffect(() => {
@@ -113,12 +128,14 @@ export default function Home() {
         height={0}
       />
       {/* The reason why I chose 0.15 is because in the design the distance between the bottom of the last snow pile and the bottom of the main container is around 164px which is 15% of the main container's width. */}
-      <section className="absolute bottom-0">
+      <form className="absolute" style={{ bottom: width * 0.04 }}>
         <div
           className="relative select-none"
           style={{ marginBottom: width * 0.02 }}
         >
-          <p className={`${font.className} text-right w-[85%] mx-auto text-4xl font-black tracking-wide text-[#26c6da]`}>
+          <p
+            className={`${font.className} text-right w-[85%] mx-auto text-4xl font-black tracking-wide text-[#26c6da]`}
+          >
             {addSpaceBetweenNumber(donations.sled1)} Ft
           </p>
           <Image
@@ -174,7 +191,9 @@ export default function Home() {
           className="relative select-none"
           style={{ marginBottom: width * 0.02 }}
         >
-          <p className={`${font.className} text-right w-[85%] mx-auto text-4xl font-black tracking-wide text-[#26c6da]`}>
+          <p
+            className={`${font.className} text-right w-[85%] mx-auto text-4xl font-black tracking-wide text-[#26c6da]`}
+          >
             {addSpaceBetweenNumber(donations.sled2)} Ft
           </p>
           <Image
@@ -222,14 +241,18 @@ export default function Home() {
                 height={width * 0.05}
               />
             </a>
-            <p className="uppercase text-[#546e7a]">lámpás &apos;92 alapítvány</p>
+            <p className="uppercase text-[#546e7a]">
+              lámpás &apos;92 alapítvány
+            </p>
           </div>
         </div>
         <div
           className="relative select-none"
           style={{ marginBottom: width * 0.02 }}
         >
-          <p className={`${font.className} text-right w-[85%] mx-auto text-4xl font-black tracking-wide text-[#26c6da]`}>
+          <p
+            className={`${font.className} text-right w-[85%] mx-auto text-4xl font-black tracking-wide text-[#26c6da]`}
+          >
             {addSpaceBetweenNumber(donations.sled3)} Ft
           </p>
 
@@ -278,14 +301,18 @@ export default function Home() {
                 height={width * 0.05}
               />
             </a>
-            <p className="uppercase text-[#546e7a]">noé állatotthon alapítvány</p>
+            <p className="uppercase text-[#546e7a]">
+              noé állatotthon alapítvány
+            </p>
           </div>
         </div>
         <div
           className="relative select-none"
           style={{ marginBottom: width * 0.02 }}
         >
-          <p className={`${font.className} text-right w-[85%] mx-auto text-4xl font-black tracking-wide text-[#26c6da]`}>
+          <p
+            className={`${font.className} text-right w-[85%] mx-auto text-4xl font-black tracking-wide text-[#26c6da]`}
+          >
             {addSpaceBetweenNumber(donations.sled4)} Ft
           </p>
 
@@ -334,10 +361,27 @@ export default function Home() {
                 height={width * 0.05}
               />
             </a>
-            <p className="uppercase text-[#546e7a]">szent istván király zenei alapítvány</p>
+            <p className="uppercase text-[#546e7a]">
+              szent istván király zenei alapítvány
+            </p>
           </div>
         </div>
-      </section>
+        <div className="flex justify-center gap-3 [&>*]:flex-1 w-4/5 mx-auto text-sm sm:text-base">
+          <button
+            type="reset"
+            className="uppercase rounded-full px-4 py-1 border-[3px] border-[#8ea5b0] text-[#8ea5b0]"
+            onClick={reset}
+          >
+            visszaállítás
+          </button>
+          <button
+            type="submit"
+            className="uppercase rounded-full px-4 py-1 border-[3px] border-white text-white bg-[#14a351]"
+          >
+            elkűldőm
+          </button>
+        </div>
+      </form>
     </main>
   );
 }

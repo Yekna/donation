@@ -55,7 +55,7 @@ input[type="range"]::-webkit-slider-runnable-track {
 }
 
 input[type="range"]::-moz-range-track {
-  height: 1px; /* Set the height as needed */
+  height: 1px;
   cursor: pointer;
   padding: 20px;
 }
