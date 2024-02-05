@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export default function Home() {
   const ref = useRef<HTMLElement>(null);
@@ -16,6 +16,53 @@ export default function Home() {
   // The main container is responsive which means the distance between the snow pile container and the main container is dynamic so the distance should be made dynamic as well
   const [width, setContainerWidth] = useState(0);
   const [sliderWidth, setSliderWidth] = useState(0);
+  const [donations, setDonations] = useState({
+    sled1: 0,
+    sled2: 0,
+    sled3: 0,
+    sled4: 0,
+  });
+
+  const handleChange = useCallback((inputName: string, value: string) => {
+    const newValues = {
+      ...donations,
+      [inputName]: parseInt(value, 10),
+    };
+
+    // Check if the sum exceeds 12, if yes, prevent updating the state
+    const sum = Object.values(newValues).reduce((acc, curr) => acc + curr, 0);
+    if (sum <= 12) {
+      switch (inputName) {
+        case "sled1":
+          if (firstSledRef.current && firstSliderRef.current)
+            firstSledRef.current.style.left = `${
+              sliderWidth * (Number(firstSliderRef.current.value) / 12)
+            }px`;
+          break;
+        case "sled2":
+          if (secondSledRef.current && secondSliderRef.current)
+            secondSledRef.current.style.left = `${
+              sliderWidth * (Number(secondSliderRef.current.value) / 12)
+            }px`;
+          break;
+        case "sled3":
+          if (thirdSledRef.current && thirdSliderRef.current)
+            thirdSledRef.current.style.left = `${
+              sliderWidth * (Number(thirdSliderRef.current.value) / 12)
+            }px`;
+          break;
+        case "sled4":
+          if (fourthSledRef.current && fourthSliderRef.current)
+            fourthSledRef.current.style.left = `${
+              sliderWidth * (Number(fourthSliderRef.current.value) / 12)
+            }px`;
+          break;
+        default:
+          break;
+      }
+      setDonations(newValues);
+    }
+  }, [donations]);
 
   // TODO: change size of slides based on main container width
   // TODO: use useCallback to stop repeating code in onInput props
@@ -67,16 +114,12 @@ export default function Home() {
             style={{ marginBottom: width * 0.1 }}
           />
           <input
-            onInput={() => {
-              if (firstSledRef.current && firstSliderRef.current) {
-                firstSledRef.current.style.left = `${sliderWidth * (Number(firstSliderRef.current.value) / 12)}px`;
-              }
-            }}
+            onChange={(e) => handleChange("sled1", e.target.value)}
             ref={firstSliderRef}
-            defaultValue={0}
             type="range"
             min="0"
-            max="12"
+            value={donations.sled1}
+            max={12}
             className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-[85%]"
             // TODO: figure out a better way to set the width without using magic numbers
           />
@@ -99,16 +142,12 @@ export default function Home() {
             style={{ marginBottom: width * 0.1 }}
           />
           <input
-            onInput={() => {
-              if (secondSledRef.current && secondSliderRef.current) {
-                secondSledRef.current.style.left = `${sliderWidth * (Number(secondSliderRef.current.value) / 12)}px`;
-              }
-            }}
+            value={donations.sled2}
+            onChange={(e) => handleChange("sled2", e.target.value)}
             ref={secondSliderRef}
-            defaultValue={0}
             type="range"
             min="0"
-            max="12"
+            max={12}
             className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-[85%]"
           />
           <Image
@@ -130,16 +169,12 @@ export default function Home() {
             style={{ marginBottom: width * 0.1 }}
           />
           <input
-            onInput={() => {
-              if (thirdSledRef.current && thirdSliderRef.current) {
-                thirdSledRef.current.style.left = `${sliderWidth * (Number(thirdSliderRef.current.value) / 12)}px`;
-              }
-            }}
+            onChange={(e) => handleChange("sled3", e.target.value)}
             ref={thirdSliderRef}
-            defaultValue={0}
             type="range"
+            value={donations.sled3}
             min="0"
-            max="12"
+            max={12}
             className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-[85%]"
           />
           <Image
@@ -160,16 +195,12 @@ export default function Home() {
             height={0}
           />
           <input
-            onInput={() => {
-              if (fourthSledRef.current && fourthSliderRef.current) {
-                fourthSledRef.current.style.left = `${sliderWidth * (Number(fourthSliderRef.current.value) / 12)}px`;
-              }
-            }}
+            onChange={(e) => handleChange("sled4", e.target.value)}
             ref={fourthSliderRef}
-            defaultValue={0}
             type="range"
+            value={donations.sled4}
             min="0"
-            max="12"
+            max={12}
             className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-[85%]"
           />
           <Image
