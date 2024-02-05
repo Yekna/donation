@@ -3,6 +3,11 @@ import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { addSpaceBetweenNumber } from "@/utils/numbers";
 
+import localFont from "next/font/local";
+const font = localFont({
+  src: "../../public/fonts/The Northern Block - Planer-ExtraBold.otf",
+});
+
 export default function Home() {
   const ref = useRef<HTMLElement>(null);
   const firstSliderRef = useRef<HTMLInputElement>(null);
@@ -113,7 +118,7 @@ export default function Home() {
           className="relative select-none"
           style={{ marginBottom: width * 0.02 }}
         >
-          <p className="text-right w-[85%] mx-auto text-4xl font-black tracking-wide text-[#26c6da]">
+          <p className={`${font.className} text-right w-[85%] mx-auto text-4xl font-black tracking-wide text-[#26c6da]`}>
             {addSpaceBetweenNumber(donations.sled1)} Ft
           </p>
           <Image
@@ -144,7 +149,7 @@ export default function Home() {
           />
           <div
             style={{ left: width * 0.025 }}
-            className="absolute z-10 bottom-0 flex gap-2"
+            className={`${font.className} absolute z-10 bottom-0 flex gap-3 items-center`}
           >
             <button>
               <Image
@@ -155,20 +160,21 @@ export default function Home() {
               />
             </button>
             <a href="#" target="_blank">
-            <Image
+              <Image
                 src="/link.svg"
                 alt="link 1"
                 width={width * 0.05}
                 height={width * 0.05}
               />
             </a>
+            <p className="uppercase text-[#546e7a]">autizmus alapítvány</p>
           </div>
         </div>
         <div
           className="relative select-none"
           style={{ marginBottom: width * 0.02 }}
         >
-          <p className="text-right w-[85%] mx-auto text-4xl font-black tracking-wide text-[#26c6da]">
+          <p className={`${font.className} text-right w-[85%] mx-auto text-4xl font-black tracking-wide text-[#26c6da]`}>
             {addSpaceBetweenNumber(donations.sled2)} Ft
           </p>
           <Image
@@ -198,7 +204,7 @@ export default function Home() {
           />
           <div
             style={{ left: width * 0.025 }}
-            className="absolute z-10 bottom-0 flex gap-2"
+            className={`${font.className} absolute z-10 bottom-0 flex gap-3 items-center`}
           >
             <button>
               <Image
@@ -209,20 +215,21 @@ export default function Home() {
               />
             </button>
             <a href="#" target="_blank">
-            <Image
+              <Image
                 src="/link.svg"
                 alt="link 2"
                 width={width * 0.05}
                 height={width * 0.05}
               />
             </a>
+            <p className="uppercase text-[#546e7a]">lámpás '92 alapítvány</p>
           </div>
         </div>
         <div
           className="relative select-none"
           style={{ marginBottom: width * 0.02 }}
         >
-          <p className="text-right w-[85%] mx-auto text-4xl font-black tracking-wide text-[#26c6da]">
+          <p className={`${font.className} text-right w-[85%] mx-auto text-4xl font-black tracking-wide text-[#26c6da]`}>
             {addSpaceBetweenNumber(donations.sled3)} Ft
           </p>
 
@@ -253,7 +260,7 @@ export default function Home() {
           />
           <div
             style={{ left: width * 0.025 }}
-            className="absolute z-10 bottom-0 flex gap-2"
+            className={`${font.className} absolute z-10 bottom-0 flex gap-3 items-center`}
           >
             <button>
               <Image
@@ -264,20 +271,21 @@ export default function Home() {
               />
             </button>
             <a href="#" target="_blank">
-            <Image
+              <Image
                 src="/link.svg"
                 alt="link 3"
                 width={width * 0.05}
                 height={width * 0.05}
               />
             </a>
+            <p className="uppercase text-[#546e7a]">noé állatotthon alapítvány</p>
           </div>
         </div>
         <div
           className="relative select-none"
           style={{ marginBottom: width * 0.02 }}
         >
-          <p className="text-right w-[85%] mx-auto text-4xl font-black tracking-wide text-[#26c6da]">
+          <p className={`${font.className} text-right w-[85%] mx-auto text-4xl font-black tracking-wide text-[#26c6da]`}>
             {addSpaceBetweenNumber(donations.sled4)} Ft
           </p>
 
@@ -308,7 +316,7 @@ export default function Home() {
           />
           <div
             style={{ left: width * 0.025 }}
-            className="absolute z-10 bottom-0 flex gap-2"
+            className={`${font.className} absolute z-10 bottom-0 flex gap-3 items-center`}
           >
             <button>
               <Image
@@ -319,13 +327,14 @@ export default function Home() {
               />
             </button>
             <a href="#" target="_blank">
-            <Image
+              <Image
                 src="/link.svg"
                 alt="link 4"
                 width={width * 0.05}
                 height={width * 0.05}
               />
             </a>
+            <p className="uppercase text-[#546e7a]">szent istván király zenei alapítvány</p>
           </div>
         </div>
       </section>
