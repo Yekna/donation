@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { addSpaceBetweenNumber } from "@/utils/numbers";
 
 export default function Home() {
   const ref = useRef<HTMLElement>(null);
@@ -23,46 +24,53 @@ export default function Home() {
     sled4: 0,
   });
 
-  const handleChange = useCallback((inputName: string, value: string) => {
-    const newValues = {
-      ...donations,
-      [inputName]: parseInt(value, 10),
-    };
+  const handleChange = useCallback(
+    (inputName: string, value: string) => {
+      const newValues = {
+        ...donations,
+        [inputName]: parseInt(value, 10),
+      };
 
-    // Check if the sum exceeds 12, if yes, prevent updating the state
-    const sum = Object.values(newValues).reduce((acc, curr) => acc + curr, 0);
-    if (sum <= 12) {
-      switch (inputName) {
-        case "sled1":
-          if (firstSledRef.current && firstSliderRef.current)
-            firstSledRef.current.style.left = `${
-              sliderWidth * (Number(firstSliderRef.current.value) / 12)
-            }px`;
-          break;
-        case "sled2":
-          if (secondSledRef.current && secondSliderRef.current)
-            secondSledRef.current.style.left = `${
-              sliderWidth * (Number(secondSliderRef.current.value) / 12)
-            }px`;
-          break;
-        case "sled3":
-          if (thirdSledRef.current && thirdSliderRef.current)
-            thirdSledRef.current.style.left = `${
-              sliderWidth * (Number(thirdSliderRef.current.value) / 12)
-            }px`;
-          break;
-        case "sled4":
-          if (fourthSledRef.current && fourthSliderRef.current)
-            fourthSledRef.current.style.left = `${
-              sliderWidth * (Number(fourthSliderRef.current.value) / 12)
-            }px`;
-          break;
-        default:
-          break;
+      // Check if the sum exceeds 12, if yes, prevent updating the state
+      const sum = Object.values(newValues).reduce((acc, curr) => acc + curr, 0);
+      if (sum <= 12) {
+        switch (inputName) {
+          case "sled1":
+            if (firstSledRef.current && firstSliderRef.current)
+              firstSledRef.current.style.left = `${
+                sliderWidth * (Number(firstSliderRef.current.value) / 12) +
+                width * 0.025
+              }px`;
+            break;
+          case "sled2":
+            if (secondSledRef.current && secondSliderRef.current)
+              secondSledRef.current.style.left = `${
+                sliderWidth * (Number(secondSliderRef.current.value) / 12) +
+                width * 0.025
+              }px`;
+            break;
+          case "sled3":
+            if (thirdSledRef.current && thirdSliderRef.current)
+              thirdSledRef.current.style.left = `${
+                sliderWidth * (Number(thirdSliderRef.current.value) / 12) +
+                width * 0.025
+              }px`;
+            break;
+          case "sled4":
+            if (fourthSledRef.current && fourthSliderRef.current)
+              fourthSledRef.current.style.left = `${
+                sliderWidth * (Number(fourthSliderRef.current.value) / 12) +
+                width * 0.025
+              }px`;
+            break;
+          default:
+            break;
+        }
+        setDonations(newValues);
       }
-      setDonations(newValues);
-    }
-  }, [donations]);
+    },
+    [donations]
+  );
 
   // TODO: change size of slides based on main container width
   // TODO: use useCallback to stop repeating code in onInput props
@@ -103,15 +111,20 @@ export default function Home() {
         height={0}
       />
       {/* The reason why I chose 0.15 is because in the design the distance between the bottom of the last snow pile and the bottom of the main container is around 164px which is 15% of the main container's width. */}
-      <section className="absolute" style={{ bottom: width * 0.15 }}>
-        <div className="relative">
+      <section className="absolute bottom-0">
+        <div
+          className="relative select-none"
+          style={{ marginBottom: width * 0.02 }}
+        >
+          <p className="text-right w-[85%] mx-auto text-4xl font-black tracking-wide text-[#26c6da]">
+            {addSpaceBetweenNumber(donations.sled1)} Ft
+          </p>
           <Image
             className="w-full"
             src="/Snow 4.svg"
             alt="Snow Pile 4"
             width={0}
             height={0}
-            style={{ marginBottom: width * 0.1 }}
           />
           <input
             onChange={(e) => handleChange("sled1", e.target.value)}
@@ -127,19 +140,25 @@ export default function Home() {
             ref={firstSledRef}
             src="/Szánkó_csúszkák.svg"
             alt="Sled 1"
-            width={100}
-            height={100}
-            className="absolute left-0 z-10 pointer-events-none top-0 h-full"
+            width={width * 0.13}
+            height={width * 0.07}
+            style={{ left: width * 0.025 }}
+            className="absolute z-10 pointer-events-none top-1/2 -translate-y-1/2"
           />
         </div>
-        <div className="relative">
+        <div
+          className="relative select-none"
+          style={{ marginBottom: width * 0.02 }}
+        >
+          <p className="text-right w-[85%] mx-auto text-4xl font-black tracking-wide text-[#26c6da]">
+            {addSpaceBetweenNumber(donations.sled2)} Ft
+          </p>
           <Image
             className="w-full"
             src="/Snow 3.svg"
             alt="Snow Pile 3"
             width={0}
             height={0}
-            style={{ marginBottom: width * 0.1 }}
           />
           <input
             value={donations.sled2}
@@ -154,19 +173,26 @@ export default function Home() {
             ref={secondSledRef}
             src="/Szánkó_csúszkák.svg"
             alt="Sled 1"
-            width={100}
-            height={100}
-            className="absolute left-0 z-10 pointer-events-none top-0 h-full"
+            width={width * 0.13}
+            height={width * 0.07}
+            style={{ left: width * 0.025 }}
+            className="absolute z-10 pointer-events-none top-1/2 -translate-y-1/2"
           />
         </div>
-        <div className="relative">
+        <div
+          className="relative select-none"
+          style={{ marginBottom: width * 0.02 }}
+        >
+          <p className="text-right w-[85%] mx-auto text-4xl font-black tracking-wide text-[#26c6da]">
+            {addSpaceBetweenNumber(donations.sled3)} Ft
+          </p>
+
           <Image
             className="w-full"
             src="/Snow 2.svg"
             alt="Snow Pile 2"
             width={0}
             height={0}
-            style={{ marginBottom: width * 0.1 }}
           />
           <input
             onChange={(e) => handleChange("sled3", e.target.value)}
@@ -181,12 +207,20 @@ export default function Home() {
             ref={thirdSledRef}
             src="/Szánkó_csúszkák.svg"
             alt="Sled 1"
-            width={100}
-            height={100}
-            className="absolute left-0 z-10 pointer-events-none top-0 h-full"
+            width={width * 0.13}
+            height={width * 0.07}
+            style={{ left: width * 0.025 }}
+            className="absolute z-10 pointer-events-none top-1/2 -translate-y-1/2"
           />
         </div>
-        <div className="relative">
+        <div
+          className="relative select-none"
+          style={{ marginBottom: width * 0.02 }}
+        >
+          <p className="text-right w-[85%] mx-auto text-4xl font-black tracking-wide text-[#26c6da]">
+            {addSpaceBetweenNumber(donations.sled4)} Ft
+          </p>
+
           <Image
             className="w-full"
             src="/Snow 1.svg"
@@ -207,9 +241,10 @@ export default function Home() {
             ref={fourthSledRef}
             src="/Szánkó_csúszkák.svg"
             alt="Sled 1"
-            width={100}
-            height={100}
-            className="absolute left-0 z-10 pointer-events-none top-0 h-full"
+            width={width * 0.13}
+            height={width * 0.07}
+            style={{ left: width * 0.025 }}
+            className="absolute z-10 pointer-events-none top-1/2 -translate-y-1/2"
           />
         </div>
       </section>
