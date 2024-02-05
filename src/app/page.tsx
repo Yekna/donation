@@ -222,7 +222,7 @@ export default function Home() {
                 height={width * 0.05}
               />
             </a>
-            <p className="uppercase text-[#546e7a]">lámpás '92 alapítvány</p>
+            <p className="uppercase text-[#546e7a]">lámpás &apos;92 alapítvány</p>
           </div>
         </div>
         <div
