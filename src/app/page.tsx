@@ -69,11 +69,8 @@ export default function Home() {
         setDonations(newValues);
       }
     },
-    [donations]
+    [donations, sliderWidth, width]
   );
-
-  // TODO: change size of slides based on main container width
-  // TODO: use useCallback to stop repeating code in onInput props
 
   useEffect(() => {
     const updateWidth = () => {
@@ -145,6 +142,27 @@ export default function Home() {
             style={{ left: width * 0.025 }}
             className="absolute z-10 pointer-events-none top-1/2 -translate-y-1/2"
           />
+          <div
+            style={{ left: width * 0.025 }}
+            className="absolute z-10 bottom-0 flex gap-2"
+          >
+            <button>
+              <Image
+                src="/info.svg"
+                alt="info 1"
+                width={width * 0.05}
+                height={width * 0.05}
+              />
+            </button>
+            <a href="#" target="_blank">
+            <Image
+                src="/link.svg"
+                alt="link 1"
+                width={width * 0.05}
+                height={width * 0.05}
+              />
+            </a>
+          </div>
         </div>
         <div
           className="relative select-none"
@@ -178,6 +196,27 @@ export default function Home() {
             style={{ left: width * 0.025 }}
             className="absolute z-10 pointer-events-none top-1/2 -translate-y-1/2"
           />
+          <div
+            style={{ left: width * 0.025 }}
+            className="absolute z-10 bottom-0 flex gap-2"
+          >
+            <button>
+              <Image
+                src="/info.svg"
+                alt="info 2"
+                width={width * 0.05}
+                height={width * 0.05}
+              />
+            </button>
+            <a href="#" target="_blank">
+            <Image
+                src="/link.svg"
+                alt="link 2"
+                width={width * 0.05}
+                height={width * 0.05}
+              />
+            </a>
+          </div>
         </div>
         <div
           className="relative select-none"
@@ -212,6 +251,27 @@ export default function Home() {
             style={{ left: width * 0.025 }}
             className="absolute z-10 pointer-events-none top-1/2 -translate-y-1/2"
           />
+          <div
+            style={{ left: width * 0.025 }}
+            className="absolute z-10 bottom-0 flex gap-2"
+          >
+            <button>
+              <Image
+                src="/info.svg"
+                alt="info 3"
+                width={width * 0.05}
+                height={width * 0.05}
+              />
+            </button>
+            <a href="#" target="_blank">
+            <Image
+                src="/link.svg"
+                alt="link 3"
+                width={width * 0.05}
+                height={width * 0.05}
+              />
+            </a>
+          </div>
         </div>
         <div
           className="relative select-none"
@@ -246,6 +306,27 @@ export default function Home() {
             style={{ left: width * 0.025 }}
             className="absolute z-10 pointer-events-none top-1/2 -translate-y-1/2"
           />
+          <div
+            style={{ left: width * 0.025 }}
+            className="absolute z-10 bottom-0 flex gap-2"
+          >
+            <button>
+              <Image
+                src="/info.svg"
+                alt="info 4"
+                width={width * 0.05}
+                height={width * 0.05}
+              />
+            </button>
+            <a href="#" target="_blank">
+            <Image
+                src="/link.svg"
+                alt="link 4"
+                width={width * 0.05}
+                height={width * 0.05}
+              />
+            </a>
+          </div>
         </div>
       </section>
     </main>
