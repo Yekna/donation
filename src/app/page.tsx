@@ -1,6 +1,13 @@
 "use client";
 import Image from "next/image";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  FormEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { addSpaceBetweenNumber } from "@/utils/numbers";
 
 import localFont from "next/font/local";
@@ -34,6 +41,7 @@ export default function Home() {
     sled3: 0,
     sled4: 0,
   });
+  const [isOpen, setOpen] = useState(false);
 
   const isDisabled = useMemo(
     () => Object.values(donations).reduce((acc, curr) => acc + curr, 0) !== 12,
@@ -54,6 +62,34 @@ export default function Home() {
       fourthSledRef.current.style.left = `${(width * 0.025).toString()}px`;
     }
   }, [width]);
+
+  const handleSubmit = async (e: FormEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    const ipRes = await fetch("https://api.ipify.org?format=json");
+    const { ip } = await ipRes.json();
+    const date = new Date();
+    const res = await fetch(
+      "https://api.apispreadsheets.com/data/PSPaDbOSTfEaMs6y/",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          data: {
+            Iznos: `1: ${donations.sled1 * 250000}; 2. ${
+              donations.sled2 * 250000
+            }; 3. ${donations.sled3 * 250000}; 4. ${donations.sled4 * 250000}`,
+            "IP adresa": ip || "couldn't find ip",
+            "Vreme Slanja": `${date.toDateString()} - ${date.toTimeString()}`,
+          },
+        }),
+      }
+    );
+    const { status } = res;
+    if (status === 201) {
+      console.log("successfully added new row to sheet");
+    } else {
+      console.log("something went wrong");
+    }
+  };
 
   const handleChange = useCallback(
     (inputName: string, value: string) => {
@@ -132,12 +168,37 @@ export default function Home() {
   return (
     <main ref={ref} className="max-w-xl mx-auto relative overflow-hidden">
       <Image
+        priority
         className="w-full"
         src="/Háttér és Fejléc.svg"
         alt="Main Image"
         width={0}
         height={0}
       />
+      {isOpen && (
+        <dialog
+          className="absolute z-10 flex flex-col bg-[#27465c] text-white py-2 px-8 text-center"
+          style={{ inset: width * 0.13 }}
+          open
+        >
+          <button className="self-end" onClick={() => setOpen(false)}>
+            <Image
+              src="/Felugró_infók.svg"
+              width={width * 0.05}
+              height={width * 0.05}
+              alt="close"
+            />
+          </button>
+          {/* TODO: get name using ref */}
+          <h3 className="uppercase">[szent istván király zenei alapítvány]</h3>
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Error,
+            sequi. Impedit possimus dignissimos commodi placeat ab, pariatur
+            dicta sit vel dolor, cupiditate, asperiores ad consectetur et
+            dolorem voluptatem. Vitae, non!
+          </p>
+        </dialog>
+      )}
       <h1
         className={`${langoFat.className} text-center uppercase absolute left-1/2 -translate-x-1/2 text-3xl sm:text-5xl text-[#15647a]`}
         style={{ top: width * 0.1 }}
@@ -202,7 +263,12 @@ export default function Home() {
             style={{ left: width * 0.025 }}
             className={`${planerEB.className} absolute z-10 bottom-0 flex gap-3 items-center`}
           >
-            <button>
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                setOpen(true);
+              }}
+            >
               <Image
                 src="/info.svg"
                 alt="info 1"
@@ -261,7 +327,12 @@ export default function Home() {
             style={{ left: width * 0.025 }}
             className={`${planerEB.className} absolute z-10 bottom-0 flex gap-3 items-center`}
           >
-            <button>
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                setOpen(true);
+              }}
+            >
               <Image
                 src="/info.svg"
                 alt="info 2"
@@ -321,7 +392,12 @@ export default function Home() {
             style={{ left: width * 0.025 }}
             className={`${planerEB.className} absolute z-10 bottom-0 flex gap-3 items-center`}
           >
-            <button>
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                setOpen(true);
+              }}
+            >
               <Image
                 src="/info.svg"
                 alt="info 3"
@@ -381,7 +457,12 @@ export default function Home() {
             style={{ left: width * 0.025 }}
             className={`${planerEB.className} absolute z-10 bottom-0 flex gap-3 items-center`}
           >
-            <button>
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                setOpen(true);
+              }}
+            >
               <Image
                 src="/info.svg"
                 alt="info 4"
@@ -411,6 +492,7 @@ export default function Home() {
             visszaállítás
           </button>
           <button
+            onClick={handleSubmit}
             disabled={isDisabled}
             type="submit"
             className="disabled:opacity-50 disabled:cursor-not-allowed uppercase rounded-full px-4 py-1 border-[3px] border-white text-white bg-[#14a351]"
