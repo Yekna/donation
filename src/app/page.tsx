@@ -148,10 +148,10 @@ export default function Home() {
         className={`${planerMd.className} absolute w-11/12 flex flex-col left-1/2 -translate-x-1/2 text-center gap-2`}
         style={{ top: width * 0.53 }}
       >
-        <h2 className="bg-[#006289] px-4 self-center rounded-full text-white text-sm sm:text-xl">
+        <h2 className="bg-[#006289] px-4 self-center rounded-full text-white text-sm sm:text-xl font-bold">
           Döntsűnk róla együtt!
         </h2>
-        <p className="sm:text-sm text-[0.45rem]">
+        <p className="sm:text-sm text-[0.45rem] text-[#7a8b93] font-bold">
           A szánkópályán minden beosztás 250 ezer forintot jelent. Húzza a
           szánkókat aszerint, ahogyan Ön osztaná el az adományt az alapítványok
           között. A kiválasztott arányokat végül egyesítjük, s ennek megfelelően
