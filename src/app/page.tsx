@@ -74,9 +74,9 @@ export default function Home() {
         method: "POST",
         body: JSON.stringify({
           data: {
-            Iznos: `1: ${donations.sled1 * 250000}; 2. ${
+            Iznos: `1: ${donations.sled1 * 250000}; 2: ${
               donations.sled2 * 250000
-            }; 3. ${donations.sled3 * 250000}; 4. ${donations.sled4 * 250000}`,
+            }; 3: ${donations.sled3 * 250000}; 4: ${donations.sled4 * 250000}`,
             "IP adresa": ip || "couldn't find ip",
             "Vreme Slanja": `${date.toDateString()} - ${date.toTimeString()}`,
           },
@@ -136,7 +136,7 @@ export default function Home() {
         setDonations(newValues);
       }
     },
-    [donations, sliderWidth, width]
+    [donations, sliderWidth]
   );
 
   useEffect(() => {
