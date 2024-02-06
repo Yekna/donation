@@ -10,6 +10,9 @@ const planerEB = localFont({
 const langoFat = localFont({
   src: "../../public/fonts/Pixilate - Lango Px Fat.otf",
 });
+const planerMd = localFont({
+  src: "../../public/fonts/The Northern Block - Planer-Medium.otf",
+});
 
 export default function Home() {
   const ref = useRef<HTMLElement>(null);
@@ -32,7 +35,10 @@ export default function Home() {
     sled4: 0,
   });
 
-  const isDisabled = useMemo(() => Object.values(donations).reduce((acc, curr) => acc + curr, 0) !== 12, [donations]);
+  const isDisabled = useMemo(
+    () => Object.values(donations).reduce((acc, curr) => acc + curr, 0) !== 12,
+    [donations]
+  );
 
   const reset = useCallback(() => {
     if (
@@ -132,8 +138,31 @@ export default function Home() {
         width={0}
         height={0}
       />
-      {/* The reason why I chose 0.15 is because in the design the distance between the bottom of the last snow pile and the bottom of the main container is around 164px which is 15% of the main container's width. */}
-      <form className="absolute" style={{ bottom: width * 0.04, padding: `0 ${width * 0.05}px` }}>
+      <h1
+        className={`${langoFat.className} text-center uppercase absolute left-1/2 -translate-x-1/2 text-3xl sm:text-5xl text-[#15647a]`}
+        style={{ top: width * 0.1 }}
+      >
+        az ajándék kőzős
+      </h1>
+      <div
+        className={`${planerMd.className} absolute w-11/12 flex flex-col left-1/2 -translate-x-1/2 text-center gap-2`}
+        style={{ top: width * 0.53 }}
+      >
+        <h2 className="bg-[#006289] px-4 self-center rounded-full text-white text-sm sm:text-xl">
+          Döntsűnk róla együtt!
+        </h2>
+        <p className="sm:text-sm text-[0.45rem]">
+          A szánkópályán minden beosztás 250 ezer forintot jelent. Húzza a
+          szánkókat aszerint, ahogyan Ön osztaná el az adományt az alapítványok
+          között. A kiválasztott arányokat végül egyesítjük, s ennek megfelelően
+          osztjuk szét a felajánlott összeget a négy szervezet között. Miután
+          végzett, az „Elküldöm” gombra kattintva véglegesítse döntését.
+        </p>
+      </div>
+      <form
+        className="absolute w-11/12 left-1/2 -translate-x-1/2"
+        style={{ bottom: width * 0.04 }}
+      >
         <div
           className="relative select-none"
           style={{ marginBottom: width * 0.02 }}
@@ -189,7 +218,9 @@ export default function Home() {
                 height={width * 0.05}
               />
             </a>
-            <p className="uppercase text-[#546e7a] text-sm sm:text-base">autizmus alapítvány</p>
+            <p className="uppercase text-[#546e7a] text-sm sm:text-base">
+              autizmus alapítvány
+            </p>
           </div>
         </div>
         <div
