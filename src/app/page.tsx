@@ -189,7 +189,7 @@ export default function Home() {
                 height={width * 0.05}
               />
             </a>
-            <p className="uppercase text-[#546e7a]">autizmus alapítvány</p>
+            <p className="uppercase text-[#546e7a] text-sm sm:text-base">autizmus alapítvány</p>
           </div>
         </div>
         <div
@@ -197,7 +197,7 @@ export default function Home() {
           style={{ marginBottom: width * 0.02 }}
         >
           <p
-            className={`${langoFat.className} text-right w-[84%] mx-auto text-4xl font-black tracking-wide text-[#26c6da]`}
+            className={`${langoFat.className} text-right w-[84%] mx-auto text-3xl sm:text-4xl font-black tracking-wide text-[#26c6da]`}
           >
             {addSpaceBetweenNumber(donations.sled2)} Ft
           </p>
@@ -241,12 +241,12 @@ export default function Home() {
             <a href="https://lampas92.hu/" target="_blank">
               <Image
                 src="/link.svg"
-                alt="link 2"
+                alt="https://lampas92.hu/"
                 width={width * 0.05}
                 height={width * 0.05}
               />
             </a>
-            <p className="uppercase text-[#546e7a]">
+            <p className="uppercase text-[#546e7a] text-sm sm:text-base">
               lámpás &apos;92 alapítvány
             </p>
           </div>
@@ -256,7 +256,7 @@ export default function Home() {
           style={{ marginBottom: width * 0.02 }}
         >
           <p
-            className={`${langoFat.className} text-right w-[84%] mx-auto text-4xl font-black tracking-wide text-[#26c6da]`}
+            className={`${langoFat.className} text-right w-[84%] mx-auto text-3xl sm:text-4xl font-black tracking-wide text-[#26c6da]`}
           >
             {addSpaceBetweenNumber(donations.sled3)} Ft
           </p>
@@ -298,15 +298,15 @@ export default function Home() {
                 height={width * 0.05}
               />
             </button>
-            <a href="http://www.noeallatotthon.hu/index.php?lang=en" target="_blank">
+            <a href="http://www.noeallatotthon.hu/" target="_blank">
               <Image
                 src="/link.svg"
-                alt="link 3"
+                alt="http://www.noeallatotthon.hu/"
                 width={width * 0.05}
                 height={width * 0.05}
               />
             </a>
-            <p className="uppercase text-[#546e7a]">
+            <p className="uppercase text-[#546e7a] text-sm sm:text-base">
               noé állatotthon alapítvány
             </p>
           </div>
@@ -316,7 +316,7 @@ export default function Home() {
           style={{ marginBottom: width * 0.02 }}
         >
           <p
-            className={`${langoFat.className} text-right w-[84%] mx-auto text-4xl font-black tracking-wide text-[#26c6da]`}
+            className={`${langoFat.className} text-right w-[84%] mx-auto text-3xl sm:text-4xl font-black tracking-wide text-[#26c6da]`}
           >
             {addSpaceBetweenNumber(donations.sled4)} Ft
           </p>
@@ -361,17 +361,17 @@ export default function Home() {
             <a href="https://www.szentistvanzene.hu/" target="_blank">
               <Image
                 src="/link.svg"
-                alt="link 4"
+                alt="https://www.szentistvanzene.hu/"
                 width={width * 0.05}
                 height={width * 0.05}
               />
             </a>
-            <p className="uppercase text-[#546e7a]">
+            <p className="uppercase text-[#546e7a] text-sm sm:text-base">
               szent istván király zenei alapítvány
             </p>
           </div>
         </div>
-        <div className="flex justify-center gap-3 [&>*]:flex-1 w-4/5 mx-auto text-sm sm:text-base">
+        <div className="flex justify-center gap-3 w-10/12 mx-auto [&>*]:flex-1 text-sm sm:text-base">
           <button
             type="reset"
             className="uppercase rounded-full px-4 py-1 border-[3px] border-[#8ea5b0] text-[#8ea5b0]"
