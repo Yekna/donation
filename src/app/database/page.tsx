@@ -1,4 +1,5 @@
 import Table from "@/components/Table";
+import Link from "next/link";
 
 type Api = {
   data: Array<{ Iznos: string; "IP adresa": string; "Vreme Slanja": string }>;
@@ -66,7 +67,7 @@ export default async function Database() {
         <nav>
           <ul>
             <li>
-              <a href="/">Go back</a>
+              <Link href="/">Go back</Link>
             </li>
           </ul>
         </nav>

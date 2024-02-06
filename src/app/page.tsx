@@ -11,6 +11,7 @@ import {
 import { addSpaceBetweenNumber } from "@/utils/numbers";
 
 import localFont from "next/font/local";
+import Link from "next/link";
 const planerEB = localFont({
   src: "../../public/fonts/The Northern Block - Planer-ExtraBold.otf",
 });
@@ -276,14 +277,14 @@ export default function Home() {
                 height={width * 0.05}
               />
             </button>
-            <a href="https://www.autizmus.hu/" target="_blank">
+            <Link href="https://www.autizmus.hu/" target="_blank">
               <Image
                 src="/link.svg"
                 alt="https://www.autizmus.hu/"
                 width={width * 0.05}
                 height={width * 0.05}
               />
-            </a>
+            </Link>
             <p className="uppercase text-[#546e7a] text-sm sm:text-base">
               autizmus alapítvány
             </p>
@@ -340,14 +341,14 @@ export default function Home() {
                 height={width * 0.05}
               />
             </button>
-            <a href="https://lampas92.hu/" target="_blank">
+            <Link href="https://lampas92.hu/" target="_blank">
               <Image
                 src="/link.svg"
                 alt="https://lampas92.hu/"
                 width={width * 0.05}
                 height={width * 0.05}
               />
-            </a>
+            </Link>
             <p className="uppercase text-[#546e7a] text-sm sm:text-base">
               lámpás &apos;92 alapítvány
             </p>
@@ -405,14 +406,14 @@ export default function Home() {
                 height={width * 0.05}
               />
             </button>
-            <a href="http://www.noeallatotthon.hu/" target="_blank">
+            <Link href="http://www.noeallatotthon.hu/" target="_blank">
               <Image
                 src="/link.svg"
                 alt="http://www.noeallatotthon.hu/"
                 width={width * 0.05}
                 height={width * 0.05}
               />
-            </a>
+            </Link>
             <p className="uppercase text-[#546e7a] text-sm sm:text-base">
               noé állatotthon alapítvány
             </p>
@@ -470,14 +471,14 @@ export default function Home() {
                 height={width * 0.05}
               />
             </button>
-            <a href="https://www.szentistvanzene.hu/" target="_blank">
+            <Link href="https://www.szentistvanzene.hu/" target="_blank">
               <Image
                 src="/link.svg"
                 alt="https://www.szentistvanzene.hu/"
                 width={width * 0.05}
                 height={width * 0.05}
               />
-            </a>
+            </Link>
             <p className="uppercase text-[#546e7a] text-sm sm:text-base">
               szent istván király zenei alapítvány
             </p>
