@@ -1,11 +1,14 @@
 "use client";
 import Image from "next/image";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { addSpaceBetweenNumber } from "@/utils/numbers";
 
 import localFont from "next/font/local";
-const font = localFont({
+const planerEB = localFont({
   src: "../../public/fonts/The Northern Block - Planer-ExtraBold.otf",
+});
+const langoFat = localFont({
+  src: "../../public/fonts/Pixilate - Lango Px Fat.otf",
 });
 
 export default function Home() {
@@ -28,6 +31,8 @@ export default function Home() {
     sled3: 0,
     sled4: 0,
   });
+
+  const isDisabled = useMemo(() => Object.values(donations).reduce((acc, curr) => acc + curr, 0) !== 12, [donations]);
 
   const reset = useCallback(() => {
     if (
@@ -59,28 +64,28 @@ export default function Home() {
             if (firstSledRef.current && firstSliderRef.current)
               firstSledRef.current.style.left = `${
                 sliderWidth * (Number(firstSliderRef.current.value) / 12) +
-                width * 0.025
+                sliderWidth * 0.025
               }px`;
             break;
           case "sled2":
             if (secondSledRef.current && secondSliderRef.current)
               secondSledRef.current.style.left = `${
                 sliderWidth * (Number(secondSliderRef.current.value) / 12) +
-                width * 0.025
+                sliderWidth * 0.025
               }px`;
             break;
           case "sled3":
             if (thirdSledRef.current && thirdSliderRef.current)
               thirdSledRef.current.style.left = `${
                 sliderWidth * (Number(thirdSliderRef.current.value) / 12) +
-                width * 0.025
+                sliderWidth * 0.025
               }px`;
             break;
           case "sled4":
             if (fourthSledRef.current && fourthSliderRef.current)
               fourthSledRef.current.style.left = `${
                 sliderWidth * (Number(fourthSliderRef.current.value) / 12) +
-                width * 0.025
+                sliderWidth * 0.025
               }px`;
             break;
           default:
@@ -89,7 +94,7 @@ export default function Home() {
         setDonations(newValues);
       }
     },
-    [donations, sliderWidth, width],
+    [donations, sliderWidth, width]
   );
 
   useEffect(() => {
@@ -128,13 +133,13 @@ export default function Home() {
         height={0}
       />
       {/* The reason why I chose 0.15 is because in the design the distance between the bottom of the last snow pile and the bottom of the main container is around 164px which is 15% of the main container's width. */}
-      <form className="absolute" style={{ bottom: width * 0.04 }}>
+      <form className="absolute" style={{ bottom: width * 0.04, padding: `0 ${width * 0.05}px` }}>
         <div
           className="relative select-none"
           style={{ marginBottom: width * 0.02 }}
         >
           <p
-            className={`${font.className} text-right w-[85%] mx-auto text-4xl font-black tracking-wide text-[#26c6da]`}
+            className={`${langoFat.className} text-right w-[84%] mx-auto text-3xl sm:text-4xl font-black tracking-wide text-[#26c6da]`}
           >
             {addSpaceBetweenNumber(donations.sled1)} Ft
           </p>
@@ -152,7 +157,7 @@ export default function Home() {
             min="0"
             value={donations.sled1}
             max={12}
-            className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-[85%]"
+            className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-[84%]"
             // TODO: figure out a better way to set the width without using magic numbers
           />
           <Image
@@ -166,7 +171,7 @@ export default function Home() {
           />
           <div
             style={{ left: width * 0.025 }}
-            className={`${font.className} absolute z-10 bottom-0 flex gap-3 items-center`}
+            className={`${planerEB.className} absolute z-10 bottom-0 flex gap-3 items-center`}
           >
             <button>
               <Image
@@ -176,10 +181,10 @@ export default function Home() {
                 height={width * 0.05}
               />
             </button>
-            <a href="#" target="_blank">
+            <a href="https://www.autizmus.hu/" target="_blank">
               <Image
                 src="/link.svg"
-                alt="link 1"
+                alt="https://www.autizmus.hu/"
                 width={width * 0.05}
                 height={width * 0.05}
               />
@@ -192,7 +197,7 @@ export default function Home() {
           style={{ marginBottom: width * 0.02 }}
         >
           <p
-            className={`${font.className} text-right w-[85%] mx-auto text-4xl font-black tracking-wide text-[#26c6da]`}
+            className={`${langoFat.className} text-right w-[84%] mx-auto text-4xl font-black tracking-wide text-[#26c6da]`}
           >
             {addSpaceBetweenNumber(donations.sled2)} Ft
           </p>
@@ -210,7 +215,7 @@ export default function Home() {
             type="range"
             min="0"
             max={12}
-            className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-[85%]"
+            className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-[84%]"
           />
           <Image
             ref={secondSledRef}
@@ -223,7 +228,7 @@ export default function Home() {
           />
           <div
             style={{ left: width * 0.025 }}
-            className={`${font.className} absolute z-10 bottom-0 flex gap-3 items-center`}
+            className={`${planerEB.className} absolute z-10 bottom-0 flex gap-3 items-center`}
           >
             <button>
               <Image
@@ -233,7 +238,7 @@ export default function Home() {
                 height={width * 0.05}
               />
             </button>
-            <a href="#" target="_blank">
+            <a href="https://lampas92.hu/" target="_blank">
               <Image
                 src="/link.svg"
                 alt="link 2"
@@ -251,7 +256,7 @@ export default function Home() {
           style={{ marginBottom: width * 0.02 }}
         >
           <p
-            className={`${font.className} text-right w-[85%] mx-auto text-4xl font-black tracking-wide text-[#26c6da]`}
+            className={`${langoFat.className} text-right w-[84%] mx-auto text-4xl font-black tracking-wide text-[#26c6da]`}
           >
             {addSpaceBetweenNumber(donations.sled3)} Ft
           </p>
@@ -270,7 +275,7 @@ export default function Home() {
             value={donations.sled3}
             min="0"
             max={12}
-            className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-[85%]"
+            className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-[84%]"
           />
           <Image
             ref={thirdSledRef}
@@ -283,7 +288,7 @@ export default function Home() {
           />
           <div
             style={{ left: width * 0.025 }}
-            className={`${font.className} absolute z-10 bottom-0 flex gap-3 items-center`}
+            className={`${planerEB.className} absolute z-10 bottom-0 flex gap-3 items-center`}
           >
             <button>
               <Image
@@ -293,7 +298,7 @@ export default function Home() {
                 height={width * 0.05}
               />
             </button>
-            <a href="#" target="_blank">
+            <a href="http://www.noeallatotthon.hu/index.php?lang=en" target="_blank">
               <Image
                 src="/link.svg"
                 alt="link 3"
@@ -311,7 +316,7 @@ export default function Home() {
           style={{ marginBottom: width * 0.02 }}
         >
           <p
-            className={`${font.className} text-right w-[85%] mx-auto text-4xl font-black tracking-wide text-[#26c6da]`}
+            className={`${langoFat.className} text-right w-[84%] mx-auto text-4xl font-black tracking-wide text-[#26c6da]`}
           >
             {addSpaceBetweenNumber(donations.sled4)} Ft
           </p>
@@ -330,7 +335,7 @@ export default function Home() {
             value={donations.sled4}
             min="0"
             max={12}
-            className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-[85%]"
+            className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-[84%]"
           />
           <Image
             ref={fourthSledRef}
@@ -343,7 +348,7 @@ export default function Home() {
           />
           <div
             style={{ left: width * 0.025 }}
-            className={`${font.className} absolute z-10 bottom-0 flex gap-3 items-center`}
+            className={`${planerEB.className} absolute z-10 bottom-0 flex gap-3 items-center`}
           >
             <button>
               <Image
@@ -353,7 +358,7 @@ export default function Home() {
                 height={width * 0.05}
               />
             </button>
-            <a href="#" target="_blank">
+            <a href="https://www.szentistvanzene.hu/" target="_blank">
               <Image
                 src="/link.svg"
                 alt="link 4"
@@ -375,8 +380,9 @@ export default function Home() {
             visszaállítás
           </button>
           <button
+            disabled={isDisabled}
             type="submit"
-            className="uppercase rounded-full px-4 py-1 border-[3px] border-white text-white bg-[#14a351]"
+            className="disabled:opacity-50 disabled:cursor-not-allowed uppercase rounded-full px-4 py-1 border-[3px] border-white text-white bg-[#14a351]"
           >
             elkűldőm
           </button>
