@@ -1,14 +1,31 @@
 "use client";
 
 import { FC, useCallback, useEffect, useState } from "react";
+import { ApiSpreadsheets } from "@/models/types";
 
-// TODO: export once so you can use it multiple times
-type Props = {
-  data: Array<{ Iznos: string; "IP adresa": string; "Vreme Slanja": string }>;
-};
-
-const Table: FC<Props> = ({ data }) => {
+const Table: FC<ApiSpreadsheets> = ({ data }) => {
   const [tableData, setTableData] = useState(data);
+  const [sortOrder, setSortOrder] = useState<"ascending" | "descending">(
+    "ascending",
+  );
+
+  useEffect(() => {
+    if (sortOrder === "descending") {
+      setTableData((data) =>
+        data!
+          .map((d) => {
+            const newDate = new Date(d.Timestamp);
+            console.log({ newDate });
+            return { ...d, Timestamp: newDate };
+          })
+          .sort((a, b) => a.Timestamp.getTime() - b.Timestamp.getTime())
+          .map((d) => ({ ...d, Timestamp: `${d.Timestamp.toISOString()}` })),
+      );
+    } else {
+      const reversed = data.slice().reverse();
+      setTableData(reversed);
+    }
+  }, [sortOrder, data]);
 
   const deleteRow = useCallback(
     async (amount: string) => {
@@ -20,17 +37,17 @@ const Table: FC<Props> = ({ data }) => {
           headers: {
             "Content-Type": "application/json",
           },
-        }
+        },
       );
       const { message } = await res.json();
       if (message !== "No rows were deleted") {
         console.log(message);
-        setTableData(tableData.filter((d) => d.Iznos !== amount));
+        setTableData(tableData!.filter((d) => d.Iznos !== amount));
       } else {
         console.error(message);
       }
     },
-    [tableData]
+    [tableData],
   );
 
   return (
@@ -39,7 +56,17 @@ const Table: FC<Props> = ({ data }) => {
         <tr>
           <th>Iznos</th>
           <th>IP Adresa</th>
-          <th>Vreme Slanja</th>
+          <th>
+            <button
+              onClick={() => {
+                setSortOrder((e) =>
+                  e === "ascending" ? "descending" : "ascending",
+                );
+              }}
+            >
+              Timestamp
+            </button>
+          </th>
           <th>Delete</th>
         </tr>
       </thead>
@@ -48,7 +75,7 @@ const Table: FC<Props> = ({ data }) => {
           <tr key={key}>
             <td>{d.Iznos}</td>
             <td>{d["IP adresa"]}</td>
-            <td>{d["Vreme Slanja"]}</td>
+            <td>{d["Timestamp"] as string}</td>
             <td>
               <button onClick={() => deleteRow(d["Iznos"])}>x</button>
             </td>

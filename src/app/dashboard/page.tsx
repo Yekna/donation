@@ -2,32 +2,18 @@ import Table from "@/components/Table";
 import Link from "next/link";
 
 type Api = {
-  data: Array<{ Iznos: string; "IP adresa": string; "Vreme Slanja": string }>;
+  data: Array<{ Iznos: string; "IP adresa": string; Timestamp: string }>;
 };
 
-async function getNumberOfRows(): Promise<{ count: number }> {
-  const res = await fetch(
-    "https://api.apispreadsheets.com/data/PSPaDbOSTfEaMs6y/?count"
-  );
-  if (!res.ok) throw new Error("Failed to get number of rows");
-
-  return res.json();
-}
-
 async function getData(): Promise<Api> {
-  const res = await fetch(
-    "https://api.apispreadsheets.com/data/PSPaDbOSTfEaMs6y/"
-  );
+  const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/dashboard/api`);
   if (!res.ok) throw new Error("Failed to get data");
 
   return res.json();
 }
 
 export default async function Database() {
-  const [{ count }, { data }] = await Promise.all([
-    getNumberOfRows(),
-    getData(),
-  ]);
+  const { data } = await getData();
 
   // TODO: create type
   const keyValuePairs = data.map(({ Iznos }) => {
@@ -58,37 +44,85 @@ export default async function Database() {
     sum["szent istván király zenei alapítvány"] += pair[4];
   });
 
-  const date = data[data.length - 1]["Vreme Slanja"];
+  const date = data[data.length - 1]["Timestamp"];
 
   //   TODO: use english words instead of serbian
   return (
-    <main>
-      <header>
+    <div className="max-w-7xl mx-auto p-5 bg-white rounded-lg shadow-md text-black">
+      <header className="mb-2">
         <nav>
-          <ul>
+          <ul className="flex justify-between">
             <li>
               <Link href="/">Go back</Link>
+            </li>
+            <li>
+              <h1 className="text-4xl font-extrabold">Dashboard</h1>
             </li>
           </ul>
         </nav>
       </header>
-      <p>Ukupan broj poslatih zahteva: {count}</p>
-      <ul>
-        <p>Ukupan iznos donacija po fondaciji:</p>
-        <li>autizmus alapítvány: {sum["autizmus alapítvány"]} Ft</li>
-        <li>
-          lámpás &apos;92 alapítvány: {sum["lámpás &apos;92 alapítvány"]} Ft
-        </li>
-        <li>
-          noé állatotthon alapítvány: {sum["noé állatotthon alapítvány"]} Ft
-        </li>
-        <li>
-          szent istván király zenei alapítvány:{" "}
-          {sum["szent istván király zenei alapítvány"]} Ft
-        </li>
-      </ul>
-      <p>Datum i vreme poslednjeg zahteva: {date}</p>
-      <Table data={data} />
-    </main>
+      <main>
+        <div className="dashboard-item">
+          <h2>Total Number of Requests Sent:</h2>
+          <p>{data.length}</p>
+        </div>
+        <div className="dashboard-item">
+          <h2>Total amount of donations per foundation:</h2>
+          <ul>
+            <li>
+              <p>
+                Autizmus alapítvány:{" "}
+                <span>
+                  {sum["autizmus alapítvány"]
+                    .toString()
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, " ")}{" "}
+                  Ft
+                </span>
+              </p>
+            </li>
+            <li>
+              <p>
+                Lámpás &apos;92 alapítvány:{" "}
+                <span>
+                  {sum["lámpás &apos;92 alapítvány"]
+                    .toString()
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, " ")}{" "}
+                  Ft
+                </span>
+              </p>
+            </li>
+            <li>
+              <p>
+                Noé állatotthon alapítvány:{" "}
+                <span>
+                  {sum["noé állatotthon alapítvány"]
+                    .toString()
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, " ")}{" "}
+                  Ft
+                </span>
+              </p>
+            </li>
+            <li>
+              <p>
+                Szent istván király zenei alapítvány:{" "}
+                <span>
+                  {sum["szent istván király zenei alapítvány"]
+                    .toString()
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, " ")}{" "}
+                  Ft
+                </span>
+              </p>
+            </li>
+          </ul>
+        </div>
+        <div className="dashboard-item">
+          <h2>Date and time of last request:</h2>
+          <p>{date}</p>
+        </div>
+        <div className="overflow-x-auto">
+          <Table data={data} />
+        </div>
+      </main>
+    </div>
   );
 }

@@ -18,7 +18,7 @@
 
 body {
   color: rgb(var(--foreground-rgb));
-  background-color: #D2E7F3;
+  background-color: #d2e7f3;
 }
 
 @layer utilities {
@@ -67,4 +67,31 @@ input[type="range"]:focus {
 
 img {
   transition: left 0.2s ease-out;
+}
+
+.dashboard-item {
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: #f0f0f0;
+  border-radius: 4px;
+}
+
+.dashboard-item h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #f2f2f2;
 }

@@ -2,10 +2,7 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
   const res = await fetch(
-    `https://api.apispreadsheets.com/data/${process.env.API_SPREADSHEETS}/`,
-    {
-      next: { revalidate: 30 },
-    }
+    `https://api.apispreadsheets.com/data/${process.env.API_SPREADSHEETS}/`
   );
 
   const data = await res.json();
@@ -21,9 +18,8 @@ export async function POST(req: Request) {
     date,
   } = await req.json();
 
-  const origin = req.headers.get('origin');
+  const origin = req.headers.get("origin");
 
-  const newDate = new Date(date);
   const res = await fetch(
     `https://api.apispreadsheets.com/data/${process.env.API_SPREADSHEETS}/`,
     {
@@ -34,11 +30,11 @@ export async function POST(req: Request) {
             sled3 * 250000
           }; 4: ${sled4 * 250000}`,
           "IP adresa": ip || "couldn't find ip",
-          "Vreme Slanja": `${newDate.toDateString()} - ${newDate.toTimeString()}`,
+          Timestamp: date,
         },
       }),
       headers: {
-        "Access-Control-Allow-Origin": origin || '*',
+        "Access-Control-Allow-Origin": origin || "*",
         "Content-Type": "application/json",
       },
     }
@@ -54,6 +50,7 @@ export async function POST(req: Request) {
   });
 }
 
+// TODO: figure out a way to query based on timestamp
 export async function DELETE(req: Request) {
   const { amount } = await req.json();
   const res = await fetch(
