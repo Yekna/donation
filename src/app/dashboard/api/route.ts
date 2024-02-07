@@ -20,6 +20,9 @@ export async function POST(req: Request) {
     ip,
     date,
   } = await req.json();
+
+  const origin = req.headers.get('origin');
+
   const newDate = new Date(date);
   const res = await fetch(
     `https://api.apispreadsheets.com/data/${process.env.API_SPREADSHEETS}/`,
@@ -35,7 +38,7 @@ export async function POST(req: Request) {
         },
       }),
       headers: {
-        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Origin": origin || '*',
         "Content-Type": "application/json",
       },
     }
@@ -46,7 +49,7 @@ export async function POST(req: Request) {
   return new NextResponse(JSON.stringify({ status }), {
     status: 201,
     headers: {
-      "Content-Type": "text-plain",
+      "Content-Type": "application/json",
     },
   });
 }
