@@ -13,6 +13,7 @@ export async function GET() {
   return NextResponse.json(data);
 }
 
+// TODO: create middleware
 export async function POST(req: Request) {
   const {
     donations: { sled1, sled2, sled3, sled4 },
@@ -33,10 +34,21 @@ export async function POST(req: Request) {
           "Vreme Slanja": `${newDate.toDateString()} - ${newDate.toTimeString()}`,
         },
       }),
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/json",
+      },
     }
   );
 
-  return res;
+  const { status } = res;
+
+  return new NextResponse(JSON.stringify({ status }), {
+    status: 201,
+    headers: {
+      "Content-Type": "text-plain",
+    },
+  });
 }
 
 export async function DELETE(req: Request) {
