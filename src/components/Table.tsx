@@ -13,7 +13,14 @@ const Table: FC<Props> = ({ data }) => {
   const deleteRow = useCallback(
     async (amount: string) => {
       const res = await fetch(
-        `https://api.apispreadsheets.com/data/PSPaDbOSTfEaMs6y/?query=delete from PSPaDbOSTfEaMs6y where Iznos='${amount}'`
+        `${process.env.NEXT_PUBLIC_SITE_URL}/dashboard/api`,
+        {
+          method: "DELETE",
+          body: JSON.stringify({ amount }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
       );
       const { message } = await res.json();
       if (message !== "No rows were deleted") {
