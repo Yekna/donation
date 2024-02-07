@@ -70,18 +70,17 @@ export default function Home() {
     const { ip } = await ipRes.json();
     const date = new Date();
     const res = await fetch(
-      "https://api.apispreadsheets.com/data/PSPaDbOSTfEaMs6y/",
+      `${process.env.NEXT_PUBLIC_SITE_URL}/dashboard/api`,
       {
         method: "POST",
         body: JSON.stringify({
-          data: {
-            Iznos: `1: ${donations.sled1 * 250000}; 2: ${
-              donations.sled2 * 250000
-            }; 3: ${donations.sled3 * 250000}; 4: ${donations.sled4 * 250000}`,
-            "IP adresa": ip || "couldn't find ip",
-            "Vreme Slanja": `${date.toDateString()} - ${date.toTimeString()}`,
-          },
+          donations,
+          ip,
+          date,
         }),
+        headers: {
+          "Content-Type": "application/json",
+        },
       }
     );
     const { status } = res;
