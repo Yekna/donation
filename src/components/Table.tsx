@@ -47,7 +47,7 @@ const Table: FC<ApiSpreadsheets> = ({ data }) => {
         console.error(message);
       }
     },
-    [tableData]
+    [data]
   );
 
   return (
