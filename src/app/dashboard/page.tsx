@@ -1,21 +1,12 @@
 import Table from "@/components/Table";
 import Link from "next/link";
+import { getLimitedAmountOfData, getCount, getLastRow } from "@/services/data";
 
-type Api = {
-  data: Array<{ Iznos: string; "IP adresa": string; Timestamp: string }>;
-};
+export default async function Dashboard() {
+  const { data } = await getLimitedAmountOfData();
+  const { count } = await getCount();
+  const { data: lastRowData } = await getLastRow();
 
-async function getData(): Promise<Api> {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/dashboard/api`);
-  if (!res.ok) throw new Error("Failed to get data");
-
-  return res.json();
-}
-
-export default async function Database() {
-  const { data } = await getData();
-
-  // TODO: create type
   const keyValuePairs = data.map(({ Iznos }) => {
     const keyValuePairs = Iznos.split(";");
     const result = { "1": 0, "2": 0, "3": 0, "4": 0 };
@@ -44,8 +35,6 @@ export default async function Database() {
     sum["szent istván király zenei alapítvány"] += pair[4];
   });
 
-  const date = data[data.length - 1]["Timestamp"];
-
   //   TODO: use english words instead of serbian
   return (
     <div className="max-w-7xl mx-auto p-5 bg-white rounded-lg shadow-md text-black">
@@ -64,7 +53,7 @@ export default async function Database() {
       <main>
         <div className="dashboard-item">
           <h2>Total Number of Requests Sent:</h2>
-          <p>{data.length}</p>
+          <p>{count}</p>
         </div>
         <div className="dashboard-item">
           <h2>Total amount of donations per foundation:</h2>
@@ -117,7 +106,7 @@ export default async function Database() {
         </div>
         <div className="dashboard-item">
           <h2>Date and time of last request:</h2>
-          <p>{date}</p>
+          <p>{lastRowData[0].Timestamp}</p>
         </div>
         <div className="overflow-x-auto">
           <Table data={data} />

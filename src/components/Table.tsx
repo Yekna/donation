@@ -2,24 +2,24 @@
 
 import { FC, useCallback, useEffect, useState } from "react";
 import { ApiSpreadsheets } from "@/models/types";
+import { getData } from "@/services/data";
 
 const Table: FC<ApiSpreadsheets> = ({ data }) => {
   const [tableData, setTableData] = useState(data);
   const [sortOrder, setSortOrder] = useState<"ascending" | "descending">(
-    "ascending",
+    "ascending"
   );
 
   useEffect(() => {
     if (sortOrder === "descending") {
       setTableData((data) =>
-        data!
+        data
           .map((d) => {
             const newDate = new Date(d.Timestamp);
-            console.log({ newDate });
             return { ...d, Timestamp: newDate };
           })
           .sort((a, b) => a.Timestamp.getTime() - b.Timestamp.getTime())
-          .map((d) => ({ ...d, Timestamp: `${d.Timestamp.toISOString()}` })),
+          .map((d) => ({ ...d, Timestamp: `${d.Timestamp.toISOString()}` }))
       );
     } else {
       const reversed = data.slice().reverse();
@@ -28,26 +28,26 @@ const Table: FC<ApiSpreadsheets> = ({ data }) => {
   }, [sortOrder, data]);
 
   const deleteRow = useCallback(
-    async (amount: string) => {
+    async (id: number) => {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_SITE_URL}/dashboard/api`,
         {
           method: "DELETE",
-          body: JSON.stringify({ amount }),
+          body: JSON.stringify({ id, data: data[data.length - 1] }),
           headers: {
             "Content-Type": "application/json",
           },
-        },
+        }
       );
       const { message } = await res.json();
       if (message !== "No rows were deleted") {
-        console.log(message);
-        setTableData(tableData!.filter((d) => d.Iznos !== amount));
+        const { data } = await getData();
+        setTableData(data);
       } else {
         console.error(message);
       }
     },
-    [tableData],
+    [tableData]
   );
 
   return (
@@ -60,7 +60,7 @@ const Table: FC<ApiSpreadsheets> = ({ data }) => {
             <button
               onClick={() => {
                 setSortOrder((e) =>
-                  e === "ascending" ? "descending" : "ascending",
+                  e === "ascending" ? "descending" : "ascending"
                 );
               }}
             >
@@ -75,9 +75,9 @@ const Table: FC<ApiSpreadsheets> = ({ data }) => {
           <tr key={key}>
             <td>{d.Iznos}</td>
             <td>{d["IP adresa"]}</td>
-            <td>{d["Timestamp"] as string}</td>
+            <td>{d["Timestamp"]}</td>
             <td>
-              <button onClick={() => deleteRow(d["Iznos"])}>x</button>
+              <button onClick={() => deleteRow(d.id)}>x</button>
             </td>
           </tr>
         ))}

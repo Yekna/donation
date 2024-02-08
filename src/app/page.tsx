@@ -9,9 +9,11 @@ import {
   useState,
 } from "react";
 import { addSpaceBetweenNumber } from "@/utils/numbers";
+import { getData } from "@/services/data";
 
 import localFont from "next/font/local";
 import Link from "next/link";
+import { ApiSpreadsheets } from "@/models/types";
 const planerEB = localFont({
   src: "../../public/fonts/The Northern Block - Planer-ExtraBold.otf",
 });
@@ -43,6 +45,7 @@ export default function Home() {
     sled4: 0,
   });
   const [isOpen, setOpen] = useState(false);
+  const [data, setData] = useState<ApiSpreadsheets["data"] | null>(null);
 
   const isDisabled = useMemo(
     () => Object.values(donations).reduce((acc, curr) => acc + curr, 0) !== 12,
@@ -67,6 +70,9 @@ export default function Home() {
   const handleSubmit = async (e: FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const ipRes = await fetch("https://api.ipify.org?format=json");
+    // NOT GOOD IF WE HAVE A LOT OF DATA AND THE USER HAS A SLOW INTERNET SPEED
+    // TODO: use and set Context on page load instead
+    const id = data!.length + 1;
     const { ip } = await ipRes.json();
     const date = new Date();
     const res = await fetch(
@@ -74,6 +80,7 @@ export default function Home() {
       {
         method: "POST",
         body: JSON.stringify({
+          id,
           donations,
           ip,
           date,
@@ -85,9 +92,11 @@ export default function Home() {
     );
     const { status } = res;
     if (status === 201) {
+      const { data } = await getData();
+      setData(data);
       console.log("successfully added new row to sheet");
     } else {
-      console.log("something went wrong");
+      console.error("something went wrong");
     }
   };
 
@@ -140,6 +149,13 @@ export default function Home() {
   );
 
   useEffect(() => {
+    const fetchData = async () => {
+      const data = await getData();
+      return data;
+    };
+
+    fetchData().then(({ data }) => setData(data));
+
     const updateWidth = () => {
       // TODO: use a debouncer
       if (ref.current) {
