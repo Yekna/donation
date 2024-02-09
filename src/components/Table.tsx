@@ -22,40 +22,37 @@ const Table: FC<ApiSpreadsheetsWithCount> = ({ data, count }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-        const { data } = await getLimitedAmountOfData(1, sortOrder);
-        setTableData(data);
+      const { data } = await getLimitedAmountOfData(1, sortOrder);
+      setTableData(data);
     };
 
     fetchData().then(() => {
-      if(sortOrder === 'descending') {
-        setTableData(d => d!.slice().reverse())
+      if (sortOrder === "descending") {
+        setTableData((d) => d!.slice().reverse());
       }
     });
   }, [sortOrder, data]);
 
-  const deleteRow = useCallback(
-    async (id: number) => {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_SITE_URL}/dashboard/api`,
-        {
-          method: "DELETE",
-          body: JSON.stringify({ id }),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      const { message } = await res.json();
-      if (message !== "No rows were deleted") {
-        // TODO: add state for tracking current index so the user stays on the same page
-        const { data } = await getLimitedAmountOfData();
-        setTableData(data);
-      } else {
-        console.error(message);
+  const deleteRow = useCallback(async (id: number) => {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_SITE_URL}/dashboard/api`,
+      {
+        method: "DELETE",
+        body: JSON.stringify({ id }),
+        headers: {
+          "Content-Type": "application/json",
+        },
       }
-    },
-    []
-  );
+    );
+    const { message } = await res.json();
+    if (message !== "No rows were deleted") {
+      // TODO: add state for tracking current index so the user stays on the same page
+      const { data } = await getLimitedAmountOfData();
+      setTableData(data);
+    } else {
+      console.error(message);
+    }
+  }, []);
 
   return (
     <>
@@ -68,9 +65,7 @@ const Table: FC<ApiSpreadsheetsWithCount> = ({ data, count }) => {
               <button
                 onClick={() => {
                   setSortOrder((e) =>
-                    e === "descending"
-                      ? "ascending"
-                      : "descending"
+                    e === "descending" ? "ascending" : "descending"
                   );
                 }}
               >
@@ -81,29 +76,31 @@ const Table: FC<ApiSpreadsheetsWithCount> = ({ data, count }) => {
           </tr>
         </thead>
         <tbody className="text-center">
-        {tableData.map((d, key) => (
-                <tr key={key}>
-                  <td>{d.Iznos}</td>
-                  <td>{d["IP adresa"]}</td>
-                  <td>{d["Timestamp"]}</td>
-                  <td>
-                    <button onClick={() => deleteRow(d.id)}>x</button>
-                  </td>
-                </tr>
-              ))}
+          {tableData.map((d, key) => (
+            <tr key={key}>
+              <td>{d.Iznos}</td>
+              <td>{d["IP adresa"]}</td>
+              <td>{d["Timestamp"]}</td>
+              <td>
+                <button onClick={() => deleteRow(d.id)}>x</button>
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
       <div className="flex justify-between">
-        {buttonsArray.map((index) => (
+        {buttonsArray.length > 1 && buttonsArray.map((index) => (
           <button
+            className="p-5 bg-[#f0f0f0] rounded-md"
+            style={{ lineHeight: 0 }}
             key={index}
             onClick={async () => {
-                const { data } = await getLimitedAmountOfData(index, sortOrder);
-                if(sortOrder === 'descending') {
-                  setTableData(() => data.slice().reverse());
-                } else {
-                  setTableData(data);
-                }
+              const { data } = await getLimitedAmountOfData(index, sortOrder);
+              if (sortOrder === "descending") {
+                setTableData(() => data.slice().reverse());
+              } else {
+                setTableData(data);
+              }
             }}
           >
             {index}

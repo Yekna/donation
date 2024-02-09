@@ -1,12 +1,13 @@
 import Table from "@/components/Table";
 import Link from "next/link";
 import { getLimitedAmountOfData, getCount, getLastRow } from "@/services/data";
+import Chart from "@/components/Chart";
 
 export default async function Dashboard() {
   const { data } = await getLimitedAmountOfData();
 
-  if(!data) return;
-  
+  if (!data) return;
+
   const { count } = await getCount();
   const { data: lastRowData } = await getLastRow();
 
@@ -110,8 +111,40 @@ export default async function Dashboard() {
           <h2>Date and time of last request:</h2>
           <p>{lastRowData[0].Timestamp}</p>
         </div>
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto mb-5">
           <Table data={data} count={count} />
+        </div>
+        <div className="flex flex-col sm:flex-row items-center gap-10 [&>*]:flex-1">
+          <Chart
+            data={[
+              {
+                title: "autizmus alapítvány",
+                value: sum["autizmus alapítvány"],
+                color: "#E38627",
+              },
+              {
+                title: "lámpás &apos;92 alapítvány",
+                value: sum["lámpás &apos;92 alapítvány"],
+                color: "#27e328",
+              },
+              {
+                title: "noé állatotthon alapítvány",
+                value: sum["noé állatotthon alapítvány"],
+                color: "#2784e3",
+              },
+              {
+                title: "szent istván király zenei alapítvány",
+                value: sum["szent istván király zenei alapítvány"],
+                color: "#e327e2",
+              },
+            ]}
+          />
+          <div>
+            <div className="bg-[#E38627] p-5">autizmus alapítvány</div>
+            <div className="bg-[#27e328] p-5">lámpás &apos;92 alapítvány</div>
+            <div className="bg-[#2784e3] p-5">noé állatotthon alapítvány</div>
+            <div className="bg-[#e327e2] p-5">szent istván király zenei alapítvány</div>
+          </div>
         </div>
       </main>
     </div>
