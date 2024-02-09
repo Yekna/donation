@@ -45,6 +45,7 @@ export default function Home() {
   });
   const [isOpen, setOpen] = useState(false);
   const [count, setCount] = useState(0);
+  const [charity, setCharity] = useState("");
 
   const isDisabled = useMemo(
     () => Object.values(donations).reduce((acc, curr) => acc + curr, 0) !== 12,
@@ -66,38 +67,41 @@ export default function Home() {
     }
   }, [width]);
 
-  const handleSubmit = useCallback(async (e: FormEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    const ipRes = await fetch("https://api.ipify.org?format=json");
-    // NOT GOOD IF WE HAVE A LOT OF DATA AND THE USER HAS A SLOW INTERNET SPEED
-    // TODO: use and set Context on page load instead
-    const id = count + 1;
-    const { ip } = await ipRes.json();
-    const date = new Date();
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_SITE_URL}/dashboard/api`,
-      {
-        method: "POST",
-        body: JSON.stringify({
-          id,
-          donations,
-          ip,
-          date,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
+  const handleSubmit = useCallback(
+    async (e: FormEvent<HTMLButtonElement>) => {
+      e.preventDefault();
+      const ipRes = await fetch("https://api.ipify.org?format=json");
+      // NOT GOOD IF WE HAVE A LOT OF DATA AND THE USER HAS A SLOW INTERNET SPEED
+      // TODO: use and set Context on page load instead
+      const id = count + 1;
+      const { ip } = await ipRes.json();
+      const date = new Date();
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_SITE_URL}/dashboard/api`,
+        {
+          method: "POST",
+          body: JSON.stringify({
+            id,
+            donations,
+            ip,
+            date,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const { status } = res;
+      if (status === 201) {
+        const { count } = await getCount();
+        setCount(count);
+        console.log("successfully added new row to sheet");
+      } else {
+        console.error("something went wrong");
       }
-    );
-    const { status } = res;
-    if (status === 201) {
-      const { count } = await getCount();
-      setCount(count);
-      console.log("successfully added new row to sheet");
-    } else {
-      console.error("something went wrong");
-    }
-  }, [count, donations]);
+    },
+    [count, donations]
+  );
 
   const handleChange = useCallback(
     (inputName: string, value: string) => {
@@ -149,11 +153,11 @@ export default function Home() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const {count} = await getCount();
+      const { count } = await getCount();
       return count;
     };
 
-    fetchData().then(c => setCount(c));
+    fetchData().then((c) => setCount(c));
 
     const updateWidth = () => {
       // TODO: use a debouncer
@@ -180,8 +184,14 @@ export default function Home() {
     };
   }, []);
 
+  useEffect(() => {
+    if (charity) {
+      setOpen(true);
+    }
+  }, [charity]);
+
   return (
-    <main ref={ref} className="max-w-xl mx-auto relative overflow-hidden">
+    <main ref={ref} className="max-w-[640px] mx-auto relative overflow-hidden">
       <Image
         priority
         className="w-full"
@@ -192,7 +202,7 @@ export default function Home() {
       />
       {isOpen && (
         <dialog
-          className="absolute z-10 flex flex-col bg-[#27465c] text-white py-2 px-8 text-center"
+          className="absolute z-10 flex flex-col bg-[#27465ce0] text-white py-4 px-8 rounded-lg gap-2 sm:gap-3"
           style={{ inset: width * 0.13 }}
           open
         >
@@ -204,13 +214,17 @@ export default function Home() {
               alt="close"
             />
           </button>
-          {/* TODO: get name using ref */}
-          <h3 className="uppercase">[szent istván király zenei alapítvány]</h3>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Error,
-            sequi. Impedit possimus dignissimos commodi placeat ab, pariatur
-            dicta sit vel dolor, cupiditate, asperiores ad consectetur et
-            dolorem voluptatem. Vitae, non!
+          <h3 className={`${planerMd.className} text-center uppercase font-extrabold text-lg sm:text-xl`}>
+            {charity}
+          </h3>
+          <p className="text-sm sm:text-lg">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam, eius
+            omnis! Commodi, quo nisi ea molestias porro a recusandae nam
+            obcaecati facere, nihil possimus provident sapiente laboriosam.
+            Aspernatur repudiandae sit veritatis porro at voluptatum beatae
+            voluptatem recusandae, unde rerum officia molestiae illo iusto
+            deleniti aliquid, ullam quos odit magnam! Laudantium sed ipsam,
+            nulla esse hic assumenda atque quo architecto ab.
           </p>
         </dialog>
       )}
@@ -227,7 +241,10 @@ export default function Home() {
         <h2 className="bg-[#006289] px-4 self-center rounded-full text-white text-sm sm:text-xl font-bold">
           Döntsűnk róla együtt!
         </h2>
-        <p className="sm:text-sm text-[0.45rem] text-[#7a8b93] font-bold">
+        <p
+          className="text-[#7a8b93] font-bold"
+          style={{ fontSize: width < 640 ? width * 0.02 : "1rem" }}
+        >
           A szánkópályán minden beosztás 250 ezer forintot jelent. Húzza a
           szánkókat aszerint, ahogyan Ön osztaná el az adományt az alapítványok
           között. A kiválasztott arányokat végül egyesítjük, s ennek megfelelően
@@ -244,7 +261,7 @@ export default function Home() {
           style={{ marginBottom: width * 0.02 }}
         >
           <p
-            className={`${langoFat.className} text-right w-[84%] mx-auto text-3xl sm:text-4xl font-black tracking-wide text-[#26c6da]`}
+            className={`${langoFat.className} text-right w-[84%] mx-auto text-3xl sm:text-5xl font-black tracking-wide text-[#26c6da]`}
           >
             {addSpaceBetweenNumber(donations.sled1)} Ft
           </p>
@@ -281,7 +298,7 @@ export default function Home() {
             <button
               onClick={(e) => {
                 e.preventDefault();
-                setOpen(true);
+                setCharity("autizmus alapítvány");
               }}
             >
               <Image
@@ -309,7 +326,7 @@ export default function Home() {
           style={{ marginBottom: width * 0.02 }}
         >
           <p
-            className={`${langoFat.className} text-right w-[84%] mx-auto text-3xl sm:text-4xl font-black tracking-wide text-[#26c6da]`}
+            className={`${langoFat.className} text-right w-[84%] mx-auto text-3xl sm:text-5xl font-black tracking-wide text-[#26c6da]`}
           >
             {addSpaceBetweenNumber(donations.sled2)} Ft
           </p>
@@ -345,7 +362,7 @@ export default function Home() {
             <button
               onClick={(e) => {
                 e.preventDefault();
-                setOpen(true);
+                setCharity("lámpás &apos;92 alapítvány");
               }}
             >
               <Image
@@ -373,7 +390,7 @@ export default function Home() {
           style={{ marginBottom: width * 0.02 }}
         >
           <p
-            className={`${langoFat.className} text-right w-[84%] mx-auto text-3xl sm:text-4xl font-black tracking-wide text-[#26c6da]`}
+            className={`${langoFat.className} text-right w-[84%] mx-auto text-3xl sm:text-5xl font-black tracking-wide text-[#26c6da]`}
           >
             {addSpaceBetweenNumber(donations.sled3)} Ft
           </p>
@@ -410,7 +427,7 @@ export default function Home() {
             <button
               onClick={(e) => {
                 e.preventDefault();
-                setOpen(true);
+                setCharity("noé állatotthon alapítvány");
               }}
             >
               <Image
@@ -438,7 +455,7 @@ export default function Home() {
           style={{ marginBottom: width * 0.02 }}
         >
           <p
-            className={`${langoFat.className} text-right w-[84%] mx-auto text-3xl sm:text-4xl font-black tracking-wide text-[#26c6da]`}
+            className={`${langoFat.className} text-right w-[84%] mx-auto text-3xl sm:text-5xl font-black tracking-wide text-[#26c6da]`}
           >
             {addSpaceBetweenNumber(donations.sled4)} Ft
           </p>
@@ -475,7 +492,7 @@ export default function Home() {
             <button
               onClick={(e) => {
                 e.preventDefault();
-                setOpen(true);
+                setCharity("szent istván király zenei alapítvány");
               }}
             >
               <Image
