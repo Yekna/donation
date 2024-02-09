@@ -66,7 +66,7 @@ export default function Home() {
     }
   }, [width]);
 
-  const handleSubmit = async (e: FormEvent<HTMLButtonElement>) => {
+  const handleSubmit = useCallback(async (e: FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const ipRes = await fetch("https://api.ipify.org?format=json");
     // NOT GOOD IF WE HAVE A LOT OF DATA AND THE USER HAS A SLOW INTERNET SPEED
@@ -97,7 +97,7 @@ export default function Home() {
     } else {
       console.error("something went wrong");
     }
-  };
+  }, [count]);
 
   const handleChange = useCallback(
     (inputName: string, value: string) => {

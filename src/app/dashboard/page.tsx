@@ -4,6 +4,9 @@ import { getLimitedAmountOfData, getCount, getLastRow } from "@/services/data";
 
 export default async function Dashboard() {
   const { data } = await getLimitedAmountOfData();
+
+  if(!data) return;
+  
   const { count } = await getCount();
   const { data: lastRowData } = await getLastRow();
 
