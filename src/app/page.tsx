@@ -9,11 +9,10 @@ import {
   useState,
 } from "react";
 import { addSpaceBetweenNumber } from "@/utils/numbers";
-import { getData } from "@/services/data";
+import { getCount } from "@/services/data";
 
 import localFont from "next/font/local";
 import Link from "next/link";
-import { ApiSpreadsheets } from "@/models/types";
 const planerEB = localFont({
   src: "../../public/fonts/The Northern Block - Planer-ExtraBold.otf",
 });
@@ -45,7 +44,7 @@ export default function Home() {
     sled4: 0,
   });
   const [isOpen, setOpen] = useState(false);
-  const [data, setData] = useState<ApiSpreadsheets["data"] | null>(null);
+  const [count, setCount] = useState(0);
 
   const isDisabled = useMemo(
     () => Object.values(donations).reduce((acc, curr) => acc + curr, 0) !== 12,
@@ -72,7 +71,7 @@ export default function Home() {
     const ipRes = await fetch("https://api.ipify.org?format=json");
     // NOT GOOD IF WE HAVE A LOT OF DATA AND THE USER HAS A SLOW INTERNET SPEED
     // TODO: use and set Context on page load instead
-    const id = data!.length + 1;
+    const id = count + 1;
     const { ip } = await ipRes.json();
     const date = new Date();
     const res = await fetch(
@@ -92,8 +91,8 @@ export default function Home() {
     );
     const { status } = res;
     if (status === 201) {
-      const { data } = await getData();
-      setData(data);
+      const { count } = await getCount();
+      setCount(count);
       console.log("successfully added new row to sheet");
     } else {
       console.error("something went wrong");
@@ -150,11 +149,11 @@ export default function Home() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await getData();
-      return data;
+      const {count} = await getCount();
+      return count;
     };
 
-    fetchData().then(({ data }) => setData(data));
+    fetchData().then(c => setCount(c));
 
     const updateWidth = () => {
       // TODO: use a debouncer
