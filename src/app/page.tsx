@@ -97,7 +97,7 @@ export default function Home() {
     } else {
       console.error("something went wrong");
     }
-  }, [count]);
+  }, [count, donations]);
 
   const handleChange = useCallback(
     (inputName: string, value: string) => {
