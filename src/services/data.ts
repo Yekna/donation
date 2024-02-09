@@ -1,4 +1,4 @@
-import { ApiSpreadsheets, SingleData } from "@/models/types";
+import { ApiSpreadsheets } from "@/models/types";
 
 export async function getData(): Promise<ApiSpreadsheets> {
   const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/dashboard/api`);
@@ -8,19 +8,20 @@ export async function getData(): Promise<ApiSpreadsheets> {
 }
 
 export async function getLimitedAmountOfData(
-  page: number = 1
+  page: number = 1,
+  sort: 'ascending' | 'descending' = 'ascending',
 ): Promise<ApiSpreadsheets> {
-  console.log("limited data");
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_SITE_URL}/dashboard/api/?page=${page}`
+  let res;
+  res = await fetch(
+    `${process.env.NEXT_PUBLIC_SITE_URL}/dashboard/api/?page=${page}&sort=${sort}`
   );
   if (!res.ok) throw new Error("Failed to get limited data");
 
   return res.json();
+
 }
 
 export async function getCount(): Promise<{ count: number }> {
-  console.log("count");
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_SITE_URL}/dashboard/api/?count=true`
   );
@@ -29,14 +30,20 @@ export async function getCount(): Promise<{ count: number }> {
   return res.json();
 }
 
-export async function getLastRow(): Promise<{
-  data: Array<Pick<SingleData, "Timestamp">>;
-}> {
-  console.log("last row");
+export async function getLastRow(): Promise<ApiSpreadsheets> {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_SITE_URL}/dashboard/api/?lastRow=true`
   );
-  if (!res.ok) throw new Error("Failed to get row count");
+  if (!res.ok) throw new Error("Failed to get last row");
+
+  return res.json();
+}
+
+export async function getAllRowsAfter(id: number): Promise<ApiSpreadsheets> {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_SITE_URL}/dashboard/api/?after=${id}`
+  );
+  if (!res.ok) throw new Error(`Failed to get all rows after ${id}`);
 
   return res.json();
 }
