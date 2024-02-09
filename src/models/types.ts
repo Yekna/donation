@@ -1,7 +1,7 @@
 export type SingleData = {
   id: number;
   Iznos: string;
-  "IP adresa": string;
+  "IP": string;
   Timestamp: string;
 }
 

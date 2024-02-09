@@ -91,13 +91,11 @@ export default function Home() {
           },
         }
       );
-      const { status } = res;
+      const { status, statusText } = res;
       if (status === 201) {
         const { count } = await getCount();
         setCount(count);
         console.log("successfully added new row to sheet");
-      } else {
-        console.error("something went wrong");
       }
     },
     [count, donations]

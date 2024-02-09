@@ -1,4 +1,9 @@
-import { getAllRowsAfter, getCount } from "@/services/data";
+import {
+  getAllRowsAfter,
+  getCount,
+  getAllTimestampsByIp,
+} from "@/services/data";
+import { convertTimestampToTime } from "@/utils/strings";
 import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
@@ -54,6 +59,12 @@ export async function GET(req: Request) {
         `https://api.apispreadsheets.com/data/${process.env.API_SPREADSHEETS}/?query=select * from ${process.env.API_SPREADSHEETS} where id=${count}`
       );
       break;
+    case "ip":
+      const ip = searchParam[1];
+      res = await fetch(
+        `https://api.apispreadsheets.com/data/${process.env.API_SPREADSHEETS}/?query=select Timestamp from ${process.env.API_SPREADSHEETS} where IP = '${ip}'`
+      );
+      break;
     case "after":
       const id = Number(searchParam[1]);
       res = await fetch(
@@ -81,6 +92,26 @@ export async function POST(req: Request) {
     ip,
     date,
   } = await req.json();
+  const { data } = await getAllTimestampsByIp(ip);
+  let throwError = false;
+
+  for (let i = 0; i < data.length; i++) {
+    const time = convertTimestampToTime(data[i].Timestamp);
+    const currentTime = new Date().getTime();
+    const timeDifference = currentTime - time;
+
+    if (timeDifference <= 600000) {
+      throwError = true;
+      break;
+    }
+  }
+
+  if (throwError)
+    return new NextResponse(JSON.stringify({ status: 403 }), {
+      status: 403,
+      statusText:
+        "Please wait 10min(s) before submitting another request",
+    });
 
   const origin = req.headers.get("origin");
 
@@ -94,7 +125,7 @@ export async function POST(req: Request) {
           Iznos: `1: ${sled1 * 250000}; 2: ${sled2 * 250000}; 3: ${
             sled3 * 250000
           }; 4: ${sled4 * 250000}`,
-          "IP adresa": ip || "couldn't find ip",
+          IP: ip || "couldn't find ip",
           Timestamp: date,
         },
       }),
