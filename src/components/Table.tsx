@@ -1,8 +1,9 @@
 "use client";
 
-import { FC, useCallback, useEffect, useState, useMemo } from "react";
+import { FC, useCallback, useEffect, useState, useMemo, useTransition } from "react";
 import { ApiSpreadsheets, SingleData } from "@/models/types";
 import { getLimitedAmountOfData } from "@/services/data";
+import { useRouter } from "next/navigation";
 
 type ApiSpreadsheetsWithCount = ApiSpreadsheets & {
   count: number;
@@ -13,6 +14,9 @@ const Table: FC<ApiSpreadsheetsWithCount> = ({ data, count }) => {
   const [sortOrder, setSortOrder] = useState<"ascending" | "descending">(
     "ascending"
   );
+
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
 
   const buttonsArray = useMemo(
     () =>
@@ -49,6 +53,11 @@ const Table: FC<ApiSpreadsheetsWithCount> = ({ data, count }) => {
       // TODO: add state for tracking current index so the user stays on the same page
       const { data } = await getLimitedAmountOfData();
       setTableData(data);
+      startTransition(() => {
+        // Refresh the current route and fetch new data from the server without
+        // losing client-side browser or React state.
+        router.refresh();
+      });
     } else {
       console.error(message);
     }

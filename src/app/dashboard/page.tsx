@@ -6,7 +6,7 @@ import Chart from "@/components/Chart";
 export default async function Dashboard() {
   const { data } = await getLimitedAmountOfData();
 
-  if (!data) return;
+  if (!data) return <div>Reached daily limit of api requests</div>;
 
   const { count } = await getCount();
   const { data: lastRowData } = await getLastRow();

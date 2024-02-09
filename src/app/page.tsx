@@ -96,6 +96,8 @@ export default function Home() {
         const { count } = await getCount();
         setCount(count);
         console.log("successfully added new row to sheet");
+      } else if(status === 403) {
+        console.error(statusText);
       }
     },
     [count, donations]
@@ -155,7 +157,7 @@ export default function Home() {
       return count;
     };
 
-    fetchData().then((c) => setCount(c));
+    fetchData().then(setCount);
 
     const updateWidth = () => {
       // TODO: use a debouncer

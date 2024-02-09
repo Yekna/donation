@@ -160,6 +160,7 @@ export async function DELETE(req: Request) {
   const promises = [];
   let counter = 1;
 
+  // TODO: for some reason it's not working as intended. Could be do to race conditions
   for (let i = count; i >= id; i--) {
     promises.push(
       fetch(
