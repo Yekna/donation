@@ -117,6 +117,7 @@ export async function POST(req: Request) {
 
 // this is REALLY slow and NOT SCALABLE at all but it's the only way i could think of how to make the table's pagination and sorting work after deleting a row
 export async function DELETE(req: Request) {
+  const origin = req.headers.get("origin");
   const { id } = await req.json();
   const res = await fetch(
     `https://api.apispreadsheets.com/data/${process.env.API_SPREADSHEETS}/?query=delete from ${process.env.API_SPREADSHEETS} where id=${id}`
@@ -140,6 +141,10 @@ export async function DELETE(req: Request) {
               data[data.length - counter].id
             }`,
           }),
+          headers: {
+            "Access-Control-Allow-Origin": origin || "*",
+            "Content-Type": "application/json",
+          },
         }
       )
     );
