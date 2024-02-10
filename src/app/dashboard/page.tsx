@@ -1,7 +1,18 @@
 import Table from "@/components/Table";
 import Link from "next/link";
-import { getLimitedAmountOfData, getCount, getLastRow } from "@/services/data";
+import {
+  getLimitedAmountOfData,
+  getCount,
+  getLastRow,
+  getAllMoney,
+} from "@/services/data";
 import Chart from "@/components/Chart";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Dashboard",
+  description: "Dashboard page made for client",
+};
 
 export default async function Dashboard() {
   const { data } = await getLimitedAmountOfData();
@@ -10,9 +21,10 @@ export default async function Dashboard() {
 
   const { count } = await getCount();
   const { data: lastRowData } = await getLastRow();
+  const { data: money } = await getAllMoney();
 
-  const keyValuePairs = data.map(({ Iznos }) => {
-    const keyValuePairs = Iznos.split(";");
+  const keyValuePairs = money.map(({ Amount }) => {
+    const keyValuePairs = Amount.split(";");
     const result = { "1": 0, "2": 0, "3": 0, "4": 0 };
 
     keyValuePairs.forEach((pair) => {
@@ -25,6 +37,7 @@ export default async function Dashboard() {
 
     return result;
   });
+
   const sum = {
     "autizmus alapítvány": 0,
     "lámpás &apos;92 alapítvány": 0,
@@ -143,7 +156,9 @@ export default async function Dashboard() {
             <div className="bg-[#E38627] p-5">autizmus alapítvány</div>
             <div className="bg-[#27e328] p-5">lámpás &apos;92 alapítvány</div>
             <div className="bg-[#2784e3] p-5">noé állatotthon alapítvány</div>
-            <div className="bg-[#e327e2] p-5">szent istván király zenei alapítvány</div>
+            <div className="bg-[#e327e2] p-5">
+              szent istván király zenei alapítvány
+            </div>
           </div>
         </div>
       </main>

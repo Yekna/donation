@@ -1,6 +1,6 @@
 export type SingleData = {
   id: number;
-  Iznos: string;
+  Amount: string;
   "IP": string;
   Timestamp: string;
 }

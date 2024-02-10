@@ -61,14 +61,14 @@ const Table: FC<ApiSpreadsheetsWithCount> = ({ data, count }) => {
     } else {
       console.error(message);
     }
-  }, []);
+  }, [router]);
 
   return (
     <>
       <table>
         <thead>
           <tr>
-            <th>Iznos</th>
+            <th>Amount</th>
             <th>IP</th>
             <th>
               <button
@@ -87,7 +87,7 @@ const Table: FC<ApiSpreadsheetsWithCount> = ({ data, count }) => {
         <tbody className="text-center">
           {tableData.map((d, key) => (
             <tr key={key}>
-              <td>{d.Iznos}</td>
+              <td>{d.Amount}</td>
               <td>{d["IP"]}</td>
               <td>{d["Timestamp"]}</td>
               <td>

@@ -60,3 +60,14 @@ export async function getAllTimestampsByIp(ip: string): Promise<{
 
   return res.json();
 }
+
+export async function getAllMoney(): Promise<{
+  data: Pick<SingleData, "Amount">[];
+}> {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_SITE_URL}/dashboard/api/?amount=true`
+  );
+  if (!res.ok) throw new Error("Failed to get money");
+
+  return res.json();
+}
