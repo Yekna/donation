@@ -133,30 +133,30 @@ export default async function Dashboard() {
               {
                 title: "autizmus alapítvány",
                 value: sum["autizmus alapítvány"],
-                color: "#E38627",
+                color: "#f0f0f0",
               },
               {
                 title: "lámpás &apos;92 alapítvány",
                 value: sum["lámpás &apos;92 alapítvány"],
-                color: "#27e328",
+                color: "#e0e0e0",
               },
               {
                 title: "noé állatotthon alapítvány",
                 value: sum["noé állatotthon alapítvány"],
-                color: "#2784e3",
+                color: "#d0d0d0",
               },
               {
                 title: "szent istván király zenei alapítvány",
                 value: sum["szent istván király zenei alapítvány"],
-                color: "#e327e2",
+                color: "#c0c0c0",
               },
             ]}
           />
           <div>
-            <div className="bg-[#E38627] p-5">autizmus alapítvány</div>
-            <div className="bg-[#27e328] p-5">lámpás &apos;92 alapítvány</div>
-            <div className="bg-[#2784e3] p-5">noé állatotthon alapítvány</div>
-            <div className="bg-[#e327e2] p-5">
+            <div className="bg-[#f0f0f0] p-5">autizmus alapítvány</div>
+            <div className="bg-[#e0e0e0] p-5">lámpás &apos;92 alapítvány</div>
+            <div className="bg-[#d0d0d0] p-5">noé állatotthon alapítvány</div>
+            <div className="bg-[#c0c0c0] p-5">
               szent istván király zenei alapítvány
             </div>
           </div>

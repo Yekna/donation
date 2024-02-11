@@ -46,7 +46,6 @@ const Table: FC<ApiSpreadsheetsWithCount> = ({ data, count }) => {
     );
     const { message } = await res.json();
     if (message !== "No rows were deleted") {
-      // TODO: add state for tracking current index so the user stays on the same page
       const { data } = await getLimitedAmountOfData();
       setTableData(data);
       startTransition(() => {
@@ -68,6 +67,8 @@ const Table: FC<ApiSpreadsheetsWithCount> = ({ data, count }) => {
             <th>IP</th>
             <th>
               <button
+                className="disabled:cursor-not-allowed disabled:opacity-50"
+                disabled={isPending}
                 onClick={() => {
                   setSortOrder((e) =>
                     e === "descending" ? "ascending" : "descending"
@@ -87,7 +88,12 @@ const Table: FC<ApiSpreadsheetsWithCount> = ({ data, count }) => {
               <td>{d["IP"]}</td>
               <td>{d["Timestamp"]}</td>
               <td>
-                <button onClick={() => deleteRow(d.id)}>x</button>
+                <button 
+                  disabled={isPending} 
+                  onClick={() => deleteRow(d.id)}
+                >
+                  x
+                </button>
               </td>
             </tr>
           ))}
@@ -96,7 +102,8 @@ const Table: FC<ApiSpreadsheetsWithCount> = ({ data, count }) => {
       <div className="flex justify-between">
         {buttonsArray.length > 1 && buttonsArray.map((index) => (
           <button
-            className="p-5 bg-[#f0f0f0] rounded-md"
+            disabled={isPending}
+            className="p-5 bg-[#f0f0f0] rounded-md disabled:cursor-not-allowed"
             style={{ lineHeight: 0 }}
             key={index}
             onClick={async () => {
@@ -108,6 +115,7 @@ const Table: FC<ApiSpreadsheetsWithCount> = ({ data, count }) => {
           </button>
         ))}
       </div>
+      {isPending && <div>Please wait for updates...</div>}
     </>
   );
 };
