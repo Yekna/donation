@@ -34,9 +34,7 @@ export default function Home() {
   const thirdSledRef = useRef<HTMLImageElement>(null);
   const fourthSledRef = useRef<HTMLImageElement>(null);
 
-  // The main container is responsive which means the distance between the snow pile container and the main container is dynamic so the distance should be made dynamic as well
   const [width, setContainerWidth] = useState(0);
-  const [sliderWidth, setSliderWidth] = useState(0);
   const [donations, setDonations] = useState({
     sled1: 0,
     sled2: 0,
@@ -49,7 +47,7 @@ export default function Home() {
 
   const isDisabled = useMemo(
     () => Object.values(donations).reduce((acc, curr) => acc + curr, 0) !== 12,
-    [donations]
+    [donations],
   );
 
   const reset = useCallback(() => {
@@ -89,18 +87,18 @@ export default function Home() {
           headers: {
             "Content-Type": "application/json",
           },
-        }
+        },
       );
       const { status, statusText } = res;
       if (status === 201) {
         const { count } = await getCount();
         setCount(count);
         console.log("successfully added new row to sheet");
-      } else if(status === 403) {
+      } else if (status === 403) {
         console.error(statusText);
       }
     },
-    [count, donations]
+    [count, donations],
   );
 
   const handleChange = useCallback(
@@ -117,29 +115,45 @@ export default function Home() {
           case "sled1":
             if (firstSledRef.current && firstSliderRef.current)
               firstSledRef.current.style.left = `${
-                sliderWidth * (Number(firstSliderRef.current.value) / 12) +
-                sliderWidth * 0.025
+                firstSliderRef.current.offsetWidth *
+                  (Number(firstSliderRef.current.value) / 12) +
+                firstSliderRef.current.offsetWidth * 0.025
               }px`;
             break;
           case "sled2":
-            if (secondSledRef.current && secondSliderRef.current)
+            if (
+              secondSledRef.current &&
+              secondSliderRef.current &&
+              firstSliderRef.current
+            )
               secondSledRef.current.style.left = `${
-                sliderWidth * (Number(secondSliderRef.current.value) / 12) +
-                sliderWidth * 0.025
+                firstSliderRef.current.offsetWidth *
+                  (Number(secondSliderRef.current.value) / 12) +
+                firstSliderRef.current.offsetWidth * 0.025
               }px`;
             break;
           case "sled3":
-            if (thirdSledRef.current && thirdSliderRef.current)
+            if (
+              thirdSledRef.current &&
+              thirdSliderRef.current &&
+              firstSliderRef.current
+            )
               thirdSledRef.current.style.left = `${
-                sliderWidth * (Number(thirdSliderRef.current.value) / 12) +
-                sliderWidth * 0.025
+                firstSliderRef.current.offsetWidth *
+                  (Number(thirdSliderRef.current.value) / 12) +
+                firstSliderRef.current.offsetWidth * 0.025
               }px`;
             break;
           case "sled4":
-            if (fourthSledRef.current && fourthSliderRef.current)
+            if (
+              fourthSledRef.current &&
+              fourthSliderRef.current &&
+              firstSliderRef.current
+            )
               fourthSledRef.current.style.left = `${
-                sliderWidth * (Number(fourthSliderRef.current.value) / 12) +
-                sliderWidth * 0.025
+                firstSliderRef.current.offsetWidth *
+                  (Number(fourthSliderRef.current.value) / 12) +
+                firstSliderRef.current.offsetWidth * 0.025
               }px`;
             break;
           default:
@@ -148,7 +162,7 @@ export default function Home() {
         setDonations(newValues);
       }
     },
-    [donations, sliderWidth]
+    [donations],
   );
 
   useEffect(() => {
@@ -165,14 +179,6 @@ export default function Home() {
         const newWidth = ref.current.offsetWidth;
         setContainerWidth(newWidth);
       }
-
-      // TODO: remove setTimeout entirely. For now this is the only solution I could come up with. Building the code makes it so offsetWidth is set to 0 for some reason.
-      setTimeout(() => {
-        if (firstSliderRef.current) {
-          const newWidth = firstSliderRef.current.offsetWidth;
-          setSliderWidth(newWidth);
-        }
-      }, 100);
     };
 
     updateWidth();
@@ -214,7 +220,9 @@ export default function Home() {
               alt="close"
             />
           </button>
-          <h3 className={`${planerMd.className} text-center uppercase font-extrabold text-lg sm:text-xl`}>
+          <h3
+            className={`${planerMd.className} text-center uppercase font-extrabold text-lg sm:text-xl`}
+          >
             {charity}
           </h3>
           <p className="text-sm sm:text-lg">
