@@ -1,5 +1,5 @@
 import {
-  getAllRowsAfter,
+  getAllIdsAfter,
   getCount,
   getAllTimestampsByIp,
 } from "@/services/data";
@@ -68,7 +68,7 @@ export async function GET(req: Request) {
     case "after":
       const id = Number(searchParam[1]);
       res = await fetch(
-        `https://api.apispreadsheets.com/data/${process.env.API_SPREADSHEETS}/?query=select * from ${process.env.API_SPREADSHEETS} where id>${id}`,
+        `https://api.apispreadsheets.com/data/${process.env.API_SPREADSHEETS}/?query=select id from ${process.env.API_SPREADSHEETS} where id>${id}`,
       );
       break;
     case "amount":
@@ -85,6 +85,9 @@ export async function GET(req: Request) {
       break;
   }
   data = await res.json();
+  if (searchParam[2] === "descending") {
+    data.data.reverse();
+  }
 
   return NextResponse.json(data);
 }
@@ -158,7 +161,7 @@ export async function DELETE(req: Request) {
   );
 
   const { count } = await getCount();
-  const { data } = await getAllRowsAfter(id);
+  const { data } = await getAllIdsAfter(id);
 
   const promises = [];
   let counter = 1;
@@ -170,8 +173,8 @@ export async function DELETE(req: Request) {
         {
           method: "POST",
           body: JSON.stringify({
-            data: { ...data[data.length - counter], id: i },
-            query: `select * from ${process.env.API_SPREADSHEETS} where id = ${
+            data: { id: i },
+            query: `select id from ${process.env.API_SPREADSHEETS} where id = ${
               data[data.length - counter].id
             }`,
           }),

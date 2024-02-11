@@ -41,7 +41,9 @@ export async function getLastRow(): Promise<ApiSpreadsheets> {
   return res.json();
 }
 
-export async function getAllRowsAfter(id: number): Promise<ApiSpreadsheets> {
+export async function getAllIdsAfter(id: number): Promise<{
+  data: Pick<SingleData, "id">[]
+}> {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_SITE_URL}/dashboard/api/?after=${id}`
   );

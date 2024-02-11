@@ -30,11 +30,7 @@ const Table: FC<ApiSpreadsheetsWithCount> = ({ data, count }) => {
       setTableData(data);
     };
 
-    fetchData().then(() => {
-      if (sortOrder === "descending") {
-        setTableData((d) => d!.slice().reverse());
-      }
-    });
+    fetchData();
   }, [sortOrder, data]);
 
   const deleteRow = useCallback(async (id: number) => {
@@ -105,11 +101,7 @@ const Table: FC<ApiSpreadsheetsWithCount> = ({ data, count }) => {
             key={index}
             onClick={async () => {
               const { data } = await getLimitedAmountOfData(index, sortOrder);
-              if (sortOrder === "descending") {
-                setTableData(() => data.slice().reverse());
-              } else {
-                setTableData(data);
-              }
+              setTableData(data);
             }}
           >
             {index}
