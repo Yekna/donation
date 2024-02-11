@@ -103,7 +103,7 @@ const Table: FC<ApiSpreadsheetsWithCount> = ({ data, count }) => {
         {buttonsArray.length > 1 && buttonsArray.map((index) => (
           <button
             disabled={isPending}
-            className="p-5 bg-[#f0f0f0] rounded-md disabled:cursor-not-allowed"
+            className="p-5 bg-[#f0f0f0] rounded-md disabled:cursor-not-allowed disabled:opacity-50"
             style={{ lineHeight: 0 }}
             key={index}
             onClick={async () => {
