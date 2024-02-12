@@ -56,7 +56,7 @@ export default async function Dashboard() {
     <div className="max-w-7xl mx-auto p-5 bg-white rounded-lg shadow-md text-black">
       <header className="mb-2">
         <nav>
-          <ul className="flex justify-between">
+          <ul className="flex justify-between items-center">
             <li>
               <Link href="/">Go back</Link>
             </li>
@@ -124,7 +124,7 @@ export default async function Dashboard() {
           <h2>Date and time of last request:</h2>
           <p>{lastRowData[0].Timestamp}</p>
         </div>
-        <div className="overflow-x-auto mb-5">
+        <div className="mb-5">
           <Table data={data} count={count} />
         </div>
         <div className="flex flex-col sm:flex-row items-center gap-10 [&>*]:flex-1">
