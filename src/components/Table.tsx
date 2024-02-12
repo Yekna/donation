@@ -21,6 +21,7 @@ const Table: FC<ApiSpreadsheetsWithCount> = ({ data, count }) => {
   const [sortOrder, setSortOrder] = useState<"ascending" | "descending">(
     "ascending"
   );
+  const [disable, setDisable] = useState(false);
 
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -32,16 +33,18 @@ const Table: FC<ApiSpreadsheetsWithCount> = ({ data, count }) => {
   );
 
   useEffect(() => {
+    setDisable(true);
     const fetchData = async () => {
       const { data } = await getLimitedAmountOfData(1, sortOrder);
       setTableData(data);
     };
 
-    fetchData();
+    fetchData().then(() => setDisable(false));
   }, [sortOrder, data]);
 
   const deleteRow = useCallback(
     async (id: number) => {
+      setDisable(true);
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_SITE_URL}/dashboard/api`,
         {
@@ -52,6 +55,7 @@ const Table: FC<ApiSpreadsheetsWithCount> = ({ data, count }) => {
           },
         }
       );
+      setDisable(true);
       const { message } = await res.json();
       if (message !== "No rows were deleted") {
         const { data } = await getLimitedAmountOfData();
@@ -79,7 +83,7 @@ const Table: FC<ApiSpreadsheetsWithCount> = ({ data, count }) => {
               <th>
                 <button
                   className="disabled:cursor-not-allowed disabled:opacity-50"
-                  disabled={isPending}
+                  disabled={isPending || disable}
                   onClick={() => {
                     setSortOrder((e) =>
                       e === "descending" ? "ascending" : "descending"
@@ -99,7 +103,11 @@ const Table: FC<ApiSpreadsheetsWithCount> = ({ data, count }) => {
                 <td>{d["IP"]}</td>
                 <td>{d["Timestamp"]}</td>
                 <td>
-                  <button disabled={isPending} onClick={() => deleteRow(d.id)}>
+                  <button
+                    className="disabled:opacity-50"
+                    disabled={isPending || disable}
+                    onClick={() => deleteRow(d.id)}
+                  >
                     x
                   </button>
                 </td>
@@ -112,12 +120,14 @@ const Table: FC<ApiSpreadsheetsWithCount> = ({ data, count }) => {
         {buttonsArray.length > 1 &&
           buttonsArray.map((index) => (
             <button
-              disabled={isPending}
+              disabled={isPending || disable}
               className="p-5 bg-[#f0f0f0] rounded-md disabled:cursor-not-allowed disabled:opacity-50"
               style={{ lineHeight: 0 }}
               key={index}
               onClick={async () => {
+                setDisable(true);
                 const { data } = await getLimitedAmountOfData(index, sortOrder);
+                setDisable(false);
                 setTableData(data);
               }}
             >
@@ -125,7 +135,7 @@ const Table: FC<ApiSpreadsheetsWithCount> = ({ data, count }) => {
             </button>
           ))}
       </div>
-      {isPending && <div>Please wait for updates...</div>}
+      {(isPending || disable) && <div>Please wait for update to finish...</div>}
     </>
   );
 };
